@@ -5,7 +5,7 @@ var pet = ({
 
 	name : "Pet",
 	health : 100,
-    hungry : 0,
+    hungry : 50,
 	toilet : 0,
 	strenght : 1,
 	agility : 1,
@@ -60,7 +60,7 @@ function print() {
 	document.getElementById('agility').innerHTML = 'Agility: ' + pet.agility + '\n';
 	document.getElementById('weight').innerHTML = 'Weight: ' + pet.weight + '\n';
 	document.getElementById('happiness').innerHTML = 'Happiness: ' + pet.happiness + '\n';
-
+	document.getElementById('money').innerHTML = 'Money: ' + pet.money + '$\n';
 }
 
 function selectBuy(foodToBuy) {
@@ -190,7 +190,7 @@ function selectFeed(foodToFeed) {
 function feed() {
 
 
-	if(pet.hungry < 100 && select2 != "") {
+	if(pet.hungry < 100 && select2 != "plate") {
 
 		
 		log = document.getElementById('log');
@@ -235,6 +235,8 @@ function feed() {
 		pet.inventory = pet.inventory - 1;
 	} else if(pet.hungry >= 100) { log.value = log.value + "I'm not hungry..."; }
 	  else if(select2 == "") { log.value = log.value + "No food selected! Please select one"; }
+
+	  print();
 
 		
 

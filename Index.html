@@ -18,9 +18,8 @@
 		
 		<div id='window'>
 
-			<div id='statistics'>
 
-			</div>
+			
 
 			<div id='quest'>
 
@@ -47,25 +46,28 @@
 
 			<span id="date"></span>
 			<!---<script type="text/javascript">window.onload = date_time('date')</script> -->
-
-			<div id='money'>
-				
+			<textarea id='log' disabled></textarea>
+			<text id='logtxt'>LOG</text>
+			<div id='moneyLog'>
+				<span class='stat' id='money' style='font-size: 15px; font-family: 'calibri';'></span></br>
 			</div>
+			<text id='moneytxt' >Money</text>
 
 			<div id='pet'>
 				
 			</div>
 
 			<div id='statistics'>
-				<span class='stats' id='name'></span></br>
-				<span class='stats' id='level'></span></br>
-				<span class='stats' id='health'></span></br>
-				<span class='stats' id='hungry'></span></br>
-				<span class='stats' id='strenght'></span></br>
-				<span class='stats' id='agility'></span></br>
-				<span class='stats' id='weight'></span></br>
-				<span class='stats' id='happiness'></span></br>
+				<span class='stat' id='name'></span></br>
+				<span class='stat' id='level'></span></br>
+				<span class='stat' id='health'></span></br>
+				<span class='stat' id='hungry'></span></br>
+				<span class='stat' id='strenght'></span></br>
+				<span class='stat' id='agility'></span></br>
+				<span class='stat' id='weight'></span></br>
+				<span class='stat' id='happiness'></span></br>
 			</div>
+			<text id='stats' >Stats</text>
 
 		</div>
 
@@ -81,7 +83,7 @@
 	  		<div class='foods' id='sushi' value='7' name='sushi' onClick='selectBuy("sushi")'></div>
 	  		<div class='foods' id='chicken' value='8' name='chicken' onClick='selectBuy("chicken")'></div>
 	  		<div class='foods' id='hamburger' value='9' name='hamburger' onClick='selectBuy("hamburger")'></div>
-	  		<div id='buttonBuy' onClick='buy();'></div>
+	  		<div id='buttonBuy' onClick='buy(), print();'></div>
 	  		<div class='buttonClose' onClick='HideShow("shopWindow")'></div>
 	  		<img id='drag1' src='css/image/drag.png'>
 	  	</div>

@@ -39,22 +39,59 @@ body
 	top: 10px;
 	left: 10px;
 	width: 120px;
-	height: 145px;
+	height: 150px;
 	background-color: #EFF7FF;
 	border: 2px solid #9adacc;
 	border-bottom-right-radius: 10px;
 	box-shadow: 2px 2px 10px orange;
 	padding: 5px;
 	text-align: left;
+	opacity: 0.6;
 }
 
-.stats{
+.stat{
+	top: 5px;
 	position: relative;
 	width: 100px;
 	height: 10px;
-	font-family: 'verdana';
+	font-family: 'calibri';
 	font-size: 13px;
 	color: black;
+}
+
+#stats{
+	position: absolute;
+	font-family: skater;
+	font-size: 25px;
+	color: white;
+	-webkit-text-stroke-width: 1px;
+	-webkit-text-stroke-color: #9adacc;
+	left: 50px;
+	top: 2px;
+}
+
+#logtxt{
+	position: absolute;
+	font-family: skater;
+	font-size: 40px;
+	color: #9adacc;
+	-webkit-text-stroke-width: 1px;
+	-webkit-text-stroke-color: white;
+	left: 885px;
+	top: 70px;
+	-webkit-transform: rotate(90deg);
+}
+
+#moneytxt{
+	position: absolute;
+	font-family: skater;
+	font-size: 30px;
+	color: white;
+	-webkit-text-stroke-width: 1px;
+	-webkit-text-stroke-color: #9adacc;
+	left: 785px;
+	top: 380px;
+
 }
 
 #quest{
@@ -165,22 +202,23 @@ body
 	height: 35px;
 	border: 2px solid #9adacc;
 	background-color: white;
-	border-bottom-left-radius: 10px;
 	border-top-right-radius: 10px;
-	font-family: 'verdana';
+	font-family: kraash;
 	font-size: 14px;
 	color: #9adacc;
+	opacity: 0.7;
 }
 
-#cash{
+#money{
 	position: absolute;
-	top: 45px;
-	left: 738px;
+	top: 361px;
+	left: 748px;
 	width: 150px;
 	height: 25px;
-	border: 1px solid #ff85bb;
-	background-color: #ffdc00;
-	border-bottom-right-radius: 10px;
+	border: 2px solid #9adacc;
+	background-color: white;
+	border-bottom-left-radius: 10px;
+	opacity: 0.7;
 }
 
 
@@ -197,4 +235,10 @@ body
   100% {
     transform: scale(1);
   }
+}
+
+
+@font-face {
+    font-family: skater;
+    src: url('font/Skater Girls Rock.ttf');
 }
