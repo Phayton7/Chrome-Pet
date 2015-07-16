@@ -1,6 +1,7 @@
 
 var shop = new Array();
 var item = new Array();
+var tamer = "";
 var pet = ({
 
 	name : "Pet",
@@ -17,6 +18,7 @@ var pet = ({
 	level : 1
 })
 
+/* Object food */
 function food(sName, sLessHungry, sPlusWeight, sHappiness, sPrice){
 
 	this.name = sName,
@@ -26,6 +28,7 @@ function food(sName, sLessHungry, sPlusWeight, sHappiness, sPrice){
 	this.price = sPrice
 }
 
+/* Array shop */
 shop[0] = new food("bread", "5", "5","0", "30");
 shop[1] = new food("fruits", "6", "1","-5", "35");
 shop[2] = new food("salad","7","1","-6", "40");
@@ -48,8 +51,10 @@ item[7] = new food("", "", "", "", "");
 item[8] = new food("", "", "", "", "");
 item[9] = new food("", "", "", "", "");
 
-var select;
+var select = "";
+var select2 = "";
 
+/* That function print the stats of the pet getting by id*/
 function print() {
 
 	document.getElementById('name').innerHTML = 'Name: ' + pet.name + '\n\n';
@@ -60,9 +65,10 @@ function print() {
 	document.getElementById('agility').innerHTML = 'Agility: ' + pet.agility + '\n';
 	document.getElementById('weight').innerHTML = 'Weight: ' + pet.weight + '\n';
 	document.getElementById('happiness').innerHTML = 'Happiness: ' + pet.happiness + '\n';
-	document.getElementById('money').innerHTML = 'Money: ' + pet.money + '$\n';
+	document.getElementById('money').innerHTML = pet.money + '$\n';
 }
 
+/* Function that select the object (Graphic) */
 function selectBuy(foodToBuy) {
 
 	selectToBuy = document.getElementById(foodToBuy);
@@ -80,6 +86,7 @@ function selectBuy(foodToBuy) {
 	}
 }
 
+/* Function buy after selectBuy (Logic) */
 function buy() {
 
 	log = document.getElementById('log');
@@ -90,7 +97,7 @@ function buy() {
 	emptySlotL = "";
 
 
-	// Ricerca oggetto da inserire //
+	// Search object to insert //
 	
 	IndexFood = -1;
 
@@ -104,7 +111,7 @@ function buy() {
 
 	if(pet.inventory<10 && pet.money >= shop[IndexFood].price) {
 
-		// Ricerca slot vuota parte logica //
+		// Searching for the empty slot in the array  //
 		
 		if(pet.inventory == 0) {
 			emptySlotL=0;
@@ -119,7 +126,7 @@ function buy() {
 			}
 		}
 
-		// Ricerca slot vuota parte
+		// Searching for the empty slot (Graphic) //
 		for(indexG=0;indexG<10 && emptySlotG=="";indexG++) {
 
 			indexG2 = 'i'+indexG;
@@ -132,13 +139,13 @@ function buy() {
 
 		
 
-		// Inserimento oggetto parte grafica //
+		// Insert object (Graphic) //
 		slotToFill = document.getElementById(emptySlotG);
 		slotToFill.style.backgroundImage = imgFood;
 		slotToFill.setAttribute('name', foodToBuy.getAttribute('name'));
 		slotToFill.setAttribute('value', emptySlotL);
 		
-		// Inserimento oggetto parte logica //
+		// Inser object in the array (Logic) //
 		item[emptySlotL].name = shop[IndexFood].name;
 		item[emptySlotL].lessHungry = shop[IndexFood].lessHungry;
 		item[emptySlotL].plusWeight = shop[IndexFood].plusWeight;
@@ -148,7 +155,7 @@ function buy() {
 
 		name = item[emptySlotL].name;
 
-		// Inserimento eventi nel log //
+		// Print the event in the Log //
 		log.value = log.value + 'You bought ' + shop[IndexFood].name + ' added in your inventory.\n';
 		log.value = log.value + 'Money spent: ' + shop[IndexFood].price + '$, money left: ' + pet.money + '$\n\n';
 		
@@ -165,6 +172,7 @@ function buy() {
 
 }
 
+/* Select the food (Graphic) */
 function selectFeed(foodToFeed) {
 
 	selectToFeed = document.getElementById(foodToFeed);
@@ -187,10 +195,11 @@ function selectFeed(foodToFeed) {
 	}
 }
 
+/* Feed function that incrase the stats of the pet and more... */
 function feed() {
 
 
-	if(pet.hungry < 100 && select2 != "plate") {
+	if(pet.hungry < 100 && select2 != "") {
 
 		
 		log = document.getElementById('log');
@@ -233,16 +242,9 @@ function feed() {
 		toFeed.setAttribute('value', -1);
 		toFeed.style.animation = 'none';
 		pet.inventory = pet.inventory - 1;
-	} else if(pet.hungry >= 100) { log.value = log.value + "I'm not hungry..."; }
-	  else if(select2 == "") { log.value = log.value + "No food selected! Please select one"; }
+	} else if(pet.hungry >= 100) { log.value = log.value + "I'm not hungry...\n"; }
+	  else if(select2 == "") { log.value = log.value + "No food selected! Please select one\n"; }
 
 	  print();
-
-		
-
 }
-
-
-
-
 

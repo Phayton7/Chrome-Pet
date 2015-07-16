@@ -1,0 +1,86 @@
+#Gym{
+	position: absolute;
+	top: 130px;
+	left: 450px;
+	padding: 10px;	
+	width: 280px;
+	height: 210px;
+	background: white;
+	z-index: 1;
+	text-align: center;
+	border-radius: 10px;
+	text-align: center;
+	display: none;
+	border: 3px solid #FF851B;
+}
+
+#time {
+	font-family: caricaturista;
+	font-weight: bold;
+	color: blue;
+}
+
+#score {
+	font-family: caricaturista;
+	font-weight: bold;
+	color: blue;
+}
+
+#gymText {
+	font-family: caricaturista;	
+	font-weight: bolder;
+	color: orange;
+}
+
+
+#gymButton{
+	position: relative;
+	top:10px;
+	left: 95px;
+	float: left;
+	width: 73px;
+	height: 74px;
+	border-radius: 48px;
+	opacity: 1;
+	background: silver;
+	background-size: 73px 74px;
+	background: url('button/START!.png');
+	animation: pulse 1.0s ease infinite;
+}
+
+#clickButton{
+	position: absolute;
+	top:10px;
+	left: 95px;
+	float: left;
+	position: relative;
+	width: 73px;
+	height: 74px;
+	border-radius: 48px;
+	opacity: 1;
+	background: silver;
+	background-size: 83px 84px;
+	background: url('button/ClickMe.png');
+	display: none;
+	animation: none;
+}
+
+:hover#clickButton{
+	animation: pulse 0.2s ease infinite;
+}
+
+#drag3{
+	position: absolute;
+	top:-10px;
+	left: 280px;
+}
+
+:hover#drag3{
+	opacity: 1.0;
+	animation: pulse 0.5s ease infinite;
+}
+
+@font-face {
+    font-family: caricaturista;
+    src: url('font/Caricaturista.ttf');
+}

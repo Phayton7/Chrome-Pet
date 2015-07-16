@@ -7,54 +7,34 @@
 		<meta charset="utf-8">
 		<link rel="stylesheet" type="text/css" href="css/index.css" />
 		<link rel="stylesheet" type="text/css" href="css/index2.css" />
+		<link rel="stylesheet" type="text/css" href="css/index3.css" />
 		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
 		<script type="text/javascript" src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-		<script type="text/javascript" src="http://www.pureexample.com/js/lib/jquery.ui.touch-punch.min.js"></script>
+		<script type="text/javascript" src="http://www.pureexample.com/js/lib/jquery.ui.touch-punch.min.js"></script>	
 		<script src="js/js.js"></script>
 		<script src="js/js2.js"></script>
+		<script src="js/js3.js"></script>
 		
 	</head>
-	<body onLoad='print()'>
-		
+	<body onLoad='print(), welcome("date")'>
+		<div id='Logo1' ></div>
+		<div id='Logo2' ></div>
 		<div id='window'>
 
-
-			
-
-			<div id='quest'>
-
-			</div>	
-		
-			<div id='buttonFeed' onClick='HideShow("Inventory")'>
-
-			</div>
-
-			<div id='buttonHeal' >
-
-			</div>
-
-			<div id='buttonGym' onclick='print()'>
-				
-			</div>
-
-			<div id='buttonWC'>
-				
-			</div>
-
-			<div id='buttonShop' onClick='HideShow("shopWindow")'>
-			</div>
-
+			<div id='quest'></div>	
+			<div id='buttonFeed' onClick='HideShow("Inventory")'></div>
+			<div id='buttonHeal' ></div>
+			<div id='buttonGym' onclick='print(),HideShow("Gym"), reset()'></div>
+			<div id='buttonWC'></div>
+			<div id='buttonShop' onClick='HideShow("shopWindow")'></div>
 			<span id="date"></span>
-			<!---<script type="text/javascript">window.onload = date_time('date')</script> -->
 			<textarea id='log' disabled></textarea>
 			<text id='logtxt'>LOG</text>
 			<div id='moneyLog'>
-				<span class='stat' id='money' style='font-size: 15px; font-family: 'calibri';'></span></br>
+				<span class='stat' id='money' style='font-size: 16px; font-family: 'calibri'; bottom:'></span></br>
 			</div>
-			<text id='moneytxt' >Money</text>
 
 			<div id='pet'>
-				
 			</div>
 
 			<div id='statistics'>
@@ -67,11 +47,11 @@
 				<span class='stat' id='weight'></span></br>
 				<span class='stat' id='happiness'></span></br>
 			</div>
-			<text id='stats' >Stats</text>
+			<text id='stats' >STATS</text>
 
 		</div>
 
-		<div id='shopWindow'>
+		<div id='shopWindow' name='shopWindow' onClick='setFocus("shopWindow","Inventory")'>
 
 	  		<div class='foods' id='bread' value='0' name='bread' onClick='selectBuy("bread")'></div>
 	  		<div class='foods' id='fruits' value='1' name='fruits' onClick='selectBuy("fruits")'></div>
@@ -88,7 +68,7 @@
 	  		<img id='drag1' src='css/image/drag.png'>
 	  	</div>
 
-	  	<div id='Inventory'>
+	  	<div id='Inventory' name='Inventory' onClick='setFocus("Inventory","shopWindow")'>
 	  		<div class='ownedFoods' id='i0' value='-1' name='plate' onClick='selectFeed("i0")'></div>
 	  		<div class='ownedFoods' id='i1' value='-1' name='plate' onClick='selectFeed("i1")'></div>
 	  		<div class='ownedFoods' id='i2' value='-1' name='plate' onClick='selectFeed("i2")'></div>
@@ -104,6 +84,16 @@
 	  		<img id='drag2' src='css/image/drag.png'>
 	  		<div class='buttonClose' onClick='HideShow("Inventory")'></div>
 	  	</div>
+	  	<div id='Gym'>
+			<div id='buttonClose2' onClick='HideShow("Gym")'></div>
+			<p align ='center' id='gymText'> How long do you take </br> to click 100 times? Let's see!</p>	
+			<span align ='center' id='time'>Second: 0</span> <br>
+		    <span align= 'center' id='score'>Score: -</span> <br>
+			<div id='gymButton' onClick='Start(), TimeCount()'></div>
+			<div id='clickButton' onClick='RapidClick()'></div>	
+			<img id='drag3' src='css/image/drag.png'>
+			<div class='buttonClose2' onClick='HideShow("Gym")'></div>
+		</div>
 		
 	</body>
 	
