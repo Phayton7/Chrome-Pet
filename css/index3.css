@@ -11,7 +11,9 @@
 	border-radius: 10px;
 	text-align: center;
 	display: none;
-	border: 3px solid #FF851B;
+	border: 5px solid #A9BCC0;
+	opacity: 0;
+	animation: none;
 }
 
 #time {
@@ -38,12 +40,12 @@
 	top:10px;
 	left: 95px;
 	float: left;
-	width: 73px;
-	height: 74px;
+	width: 83px;
+	height: 84px;
 	border-radius: 48px;
 	opacity: 1;
 	background: silver;
-	background-size: 73px 74px;
+	background-size: 83px 84px;
 	background: url('button/START!.png');
 	animation: pulse 1.0s ease infinite;
 }
@@ -54,8 +56,8 @@
 	left: 95px;
 	float: left;
 	position: relative;
-	width: 73px;
-	height: 74px;
+	width: 83px;
+	height: 84px;
 	border-radius: 48px;
 	opacity: 1;
 	background: silver;

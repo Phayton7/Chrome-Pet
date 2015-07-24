@@ -1,22 +1,18 @@
-
-function welcome(data) {
-
-    log = document.getElementById('log');
-    log.value = log.value + 'WELCOME!\n\n'
-    window.onload = date_time('date');
-}
-
 /* Hide and show function */
 function HideShow(quale) {  
-  if(document.getElementById(quale).style.display == 'block')
-    document.getElementById(quale).style.display = 'none';
-  else
-    document.getElementById(quale).style.display = 'block';
+    if(document.getElementById(quale).style.display == 'block') {
+        document.getElementById(quale).style.animation = 'bounceOut 0.5s forwards'
+        setTimeout(function(){ document.getElementById(quale).style.display = 'none'; }, 600)
+    }
+    else
+    {
+       document.getElementById(quale).style.display = 'block';
+       document.getElementById(quale).style.animation = 'bounceIn 0.5s forwards';
+    }
 }
 
 /* Data&Time generator function */
-function date_time(id)
-{
+function date_time(id) {
         date = new Date;
         year = date.getFullYear();
         month = date.getMonth();
@@ -42,7 +38,11 @@ function date_time(id)
         result = ''+days[day]+' '+months[month]+' '+d+' - '+h+':'+m;
         checkTime(h);
         document.getElementById(id).innerHTML = result;
-        setTimeout('date_time("'+id+'");','60000');
+
+        setTimeout(function() { growUp(1); }, 60000);
+        print();
+
+        setTimeout('date_time("'+id+'");', 1200000);
 }
 
 /* Time checker for background change */
@@ -60,14 +60,14 @@ function checkTime(hour) {
     stat = document.getElementsByClassName('stat');
 
 
-    if(hour > 5 && hour < 16) {
+    if(hour > 5 && hour <= 16) {
 
         gameWindow.style.backgroundImage = 'url("./css/bg//background1.gif")';
         gameWindow.style.border = '5px solid #9adacc';
         body.style.backgroundImage = 'url(./css/bg//background.1.jpg")"';
         statistics.style.border = '2px solid #9adacc';
         statistics.style.background = 'white';
-        stats.style.color = '#17C654';
+        stats.style.color = '#2ECC40';
         date.style.color = '#17C654';
         date.style.border = '2px solid #9adacc';
         date.style.background = 'white';
@@ -76,10 +76,10 @@ function checkTime(hour) {
         log.style.border = '2px solid #9adacc';
         log.style.background = '#9adacc';
         log.style.color = '#379336';
-        log2.style.color = '#17C654';
+        log2.style.color = '#2ECC40';
         quest.style.border = '2px solid #9adacc';
         quest.style.backgroundColor = 'white';
-        for(i=0;i<9;i++)
+        for(i=0;i<8;i++)
             stat[i].style.color = 'blue';
     }
 
@@ -103,7 +103,7 @@ function checkTime(hour) {
         log2.style.color = '#28ae31';
         quest.style.border = '2px solid #28ae31';
         quest.style.background = '#71E06C';
-        for(i=0;i<9;i++)
+        for(i=0;i<8;i++)
             stat[i].style.color = 'orange';
     }
 
@@ -126,7 +126,7 @@ function checkTime(hour) {
         log2.style.color = '#78769D';
         quest.style.border = '2px solid #091769';
         quest.style.background = '#1626BA';
-        for(i=0;i<9;i++)
+        for(i=0;i<8;i++)
             stat[i].style.color = 'white';
     }
 }
@@ -140,6 +140,31 @@ function setFocus(id1,id2) {
     div2.style.zIndex = 1;
 } 
 
+
+function growUp(howMuch) {
+
+    pet.grownPoint = pet.grownPoint + howMuch;
+    evolutionControl();
+    print();
+}
+
+function evolutionControl() {
+
+    if(pet.grownPoint >= 150 && pet.std == 1) {
+
+        pet.std = 2;
+        petAge = document.getElementById('pet');
+        petAge.style.animation = 'flash 1s forwards';
+        setTimeout(function() {
+            petAge.style.backgroundImage = "url(./css/pet/petGrown.png)";
+            petAge.style.animation = 'playEvo 1s steps(2) infinite';
+            petAge.style.top = '350px';
+            petAge.style.width = '132px';
+            petAge.style.height = '124px';
+        }, 800);
+        print();
+    }
+}
 
 
 /* Both draggable function */

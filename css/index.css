@@ -1,13 +1,11 @@
 body 
 {
     margin: 0px; padding: 0px;
-    background-image
     overflow: hidden;
     text-align: center;
     background-image:  url('bg/background1.jpg');
     background-size: cover;
     background-repeat: no-repeat;
-    background-position: center center;     
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -16,34 +14,186 @@ body
     user-select: none;
 }
 
+.button {
+  border: 0;
+  background: #0087cc;
+  border-radius: 4px;
+  box-shadow: 0 5px 0 #006599;
+  color: #fff;
+  cursor: pointer;
+  font-family: space;
+  font-size: 12px;
+  margin: 0;
+  outline: 0;
+  padding: 5px;
+  transition: all .1s linear;
+}
+
+.button:active {
+  box-shadow: 0 2px 0 #006599;
+  transform: translateY(3px);
+}
+
+#canvas{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	opacity: 0;
+	display: none;
+	animation: none;
+}
+
+@keyframes darker{
+
+	from{ display: block; opacity: 0;}
+	to{ display:block; opacity: 0.8;}
+}
+
+@keyframes lighter {
+
+	from{ display: block; opacity: 0.8;}
+	to{ display:none; opacity: 0;}
+}
+
+#welcome {
+	position: absolute;
+	font-family: space;
+	font-size: 50px;
+	top: 220px;
+	left: 450px;
+	color: white;
+	display: block;
+}
+
+
+#buttonStart{
+	position: absolute;
+	height: 60px;
+	width: 150px;
+	left: 600px;
+	top: 300px;
+	outline: none;
+	display: block;
+}
+
+#buttonLoad{
+	position: absolute;
+	height: 60px;
+	width: 150px;
+	left: 600px;
+	top: 370px;
+	outline: none;
+	display: block;
+}
+
+
+
+
+#inputName{
+	padding-left: 15px;
+	position: absolute;
+	top: 270px;
+	left: 470px;
+	width: 400px;
+	height: 50px;
+	background-color: white;
+	border: 3px solid #9adacc;
+	border-radius: 7px;
+	font-family: 'Helvetica';
+	font-size: 25px;
+	color: grey;
+	outline: none;
+	display: none;
+}
+
+#inputName:focus{
+	outline: none;
+	animation: light 1s forwards;
+}
+
+#buttonConfirm{
+	position: absolute;
+	height: 40px;
+	width: 420px;
+	left: 471px;
+	top: 340px;
+	display: none;
+}
+
+@keyframes light {
+	from {box-shadow: 0 0 0px white;}
+	to {box-shadow: 0 0 10px white;}
+}
+
+#Logo {
+
+	position: absolute;
+	top: 20px;
+	left: 430px;
+}
+
 #Logo1{
+
 	position: absolute;
 	width: 190px;
 	height: 430px;
 	top: 20px;
-	left: 20px;
+	left: 30px;
 	background-image: url('logo/chrome.png');
+	animation: none;
+    display: none;
+    opacity: 0;
 }
 
 #Logo2{
+
 	position: absolute;
 	width: 190px;
 	height: 329px;
 	top: 20px;
 	left: 1150px;
 	background-image: url('logo/pet.png');
+	animation: none;
+    display: none;
+    opacity: 0;
+}
+
+@keyframes Float{
+    from {-webkit-transform:translate(0, 0px);}
+    65% {-webkit-transform:translate(0, 15px);}
+    to {-webkit-transform: translate(0, -0px);    }    
+}
+
+@keyframes Floatx{
+    from {-webkit-transform:translate(0, -0px);}
+    65% {-webkit-transform:translate(0, 15px);}
+    to {-webkit-transform: translate(0, 0px);    }    
 }
 
 #window{
-	position: relative;
+	position: absolute;
 	top: 20px;
+	left: 240px;
 	width: 900px;
 	height: 600px;
 	border: 5px solid #9adacc;
     background-image:  url('bg/background1.gif');
 	border-radius: 10px;
 	margin: auto;
-	display: inline-block;
+	display: none;
+	opacity: 0;
+	animation-name: none;
+	animation-fill-mode: both; 
+}
+
+@keyframes show /* Safari and Chrome */
+{
+	from{
+		0% display:block ; opacity: 0;
+	} To {
+		100% display: block ; opacity: 1;
+	}
 }
 
 #pet{
@@ -59,6 +209,26 @@ body
 
 @keyframes play {
     100% { background-position: -412px; }
+}
+
+@keyframes playEvo {
+	100% { background-position: -264px; }
+}
+
+@keyframes flash { 
+    0%, 50%, 100% {opacity: 1;} 
+    25%, 75% {opacity: 0;} 
+} 
+
+#poop{
+	position: absolute;
+	height: 32px;
+	width: 32px;
+	top: 450px;
+	left: 550px;
+	background-image: url('image/poop.png');
+	display: none;
+	animation: none;
 }
 
 #statistics{
@@ -89,10 +259,12 @@ body
 	position: absolute;
 	font-family: space;
 	font-size: 12px;
-	color: #7CA5FC;
+	color: #2ECC40;
 	left: 40px;
 	top: 0px;
 }
+
+
 
 #logtxt{
 	position: absolute;
@@ -100,8 +272,8 @@ body
 	right: 0px;
 	font-family: space;
 	font-size: 22px;
-	color: #7CA5FC;
-	left: 895px;
+	color: #2ECC40;
+	left: 910px;
 	top: 70px;
 	-webkit-transform: rotate(90deg);
 	test-shadow: 2px 2px orange;
@@ -133,7 +305,7 @@ body
 
 :hover#buttonShop{
 	opacity: 1.0;
-	animation: pulse 1s ease infinite;
+	animation: pulse 0.5s ease infinite;
 }
 
 
@@ -151,7 +323,7 @@ body
 
 :hover#buttonFeed{
 	opacity: 1.0;
-	animation: pulse 1s ease infinite;
+	animation: pulse 0.5s ease infinite;
 }
 
 #buttonHeal{
@@ -168,7 +340,7 @@ body
 
 :hover#buttonHeal{
 	opacity: 1.0;
-	animation: pulse 1s ease infinite;
+	animation: pulse 0.5s ease infinite;
 }
 
 #buttonGym{
@@ -185,7 +357,7 @@ body
 
 :hover#buttonGym{
 	opacity: 1.0;
-	animation: pulse 1s ease infinite;
+	animation: pulse 0.5s ease infinite;
 }
 
 #buttonWC{
@@ -202,7 +374,7 @@ body
 
 :hover#buttonWC{
 	opacity: 1.0;
-	animation: pulse 1s ease infinite;
+	animation: pulse 0.5s ease infinite;
 }
 
 
@@ -216,8 +388,7 @@ body
 	background-color: white;
 	border-top-right-radius: 9px;
 	font-family: 'calibri';
-	font-size: 15px;
-	font-weight: bold;
+	font-size: 14px;
 	padding-top: 10px;
 	color: #17C654;
 	opacity: 0.7;
@@ -239,6 +410,127 @@ body
 
 
 
+.speech-bubble {
+    background-color: #f8f8f8;
+    border: 1px solid #c8c8c8;
+    border-radius: 20px;
+    width: 110px;
+    text-align: center;
+    padding: 4px;
+    position: absolute;
+    top: 350px;
+    left: 420px;
+    animation: none;
+    opacity: 0;
+}
+
+#message {
+	font-size: 14px;
+	font-family: smart;
+}
+
+.speech-bubble .arrow {
+    border-style: solid;
+    position: absolute;
+    animation: none;
+}
+ 
+.bottom {
+    border-color: #f8f8f8 transparent transparent transparent;
+    border-width: 8px 8px 0px 8px;
+    bottom: -8px;
+    left: 20px;
+}
+
+
+
+.animated { 
+    -webkit-animation-duration: 1.5s; 
+    animation-duration: 1.5s; 
+    -webkit-animation-fill-mode: both; 
+    animation-fill-mode: both; 
+} 
+
+
+@keyframes bounceInDown { 
+    0% { 
+    	opacity: 0;
+        transform: translateY(-2000px); 
+    } 
+    60% { 
+        opacity: 1; 
+        transform: translateY(20px); 
+    } 
+    80% { 
+    	opacity: 1; 
+        transform: translateY(-10px); 
+    } 
+    100% { 
+    	opacity: 1; 
+        transform: translateY(0); 
+    } 
+} 
+
+@keyframes bounceIn { 
+    0% { 
+        opacity: 0; 
+        transform: scale(.3); 
+    } 
+
+    50% { 
+        opacity: 1; 
+        transform: scale(1.05); 
+    } 
+
+    70% { 
+    	opacity: 1; 
+        transform: scale(.9); 
+    } 
+
+    100% { 
+    	opacity: 1; 
+        transform: scale(1); 
+    } 
+} 
+
+@keyframes bounceOut { 
+    0% { 
+    	opacity: 1; 
+        transform: scale(1); 
+    } 
+    25% { 
+    	opacity: 1; 
+        transform: scale(.95); 
+    } 
+    50% { 
+        opacity: 1; 
+        transform: scale(1.1); 
+    } 
+    100% { 
+        opacity: 0; 
+        transform: scale(.3); 
+    } 
+} 
+
+@keyframes appear {
+
+	from{
+		0% display:block ; opacity: 0;
+	} To {
+		100% display: block ; opacity: 1;
+	}
+}
+
+@keyframes disappear {
+
+	from{
+		0% display:block ; opacity: 1;
+	} To {
+		100% display: block ; opacity: 0;
+	}
+
+}
+
 @keyframes pulse {
   0% {
     transform: scale(1);
@@ -253,8 +545,12 @@ body
   }
 }
 
-
 @font-face {
     font-family: space;
     src: url('font/Space Comics.ttf');
+}
+
+@font-face {
+	font-family: smart;
+	src: url('font/Smart_Kid.otf');
 }

@@ -2,9 +2,14 @@
 var shop = new Array();
 var item = new Array();
 var tamer = "";
+var digestioni = new Array();
+
+
 var pet = ({
 
-	name : "Pet",
+	name : 'pet',
+	std : 1,
+	grownPoint: 0,
 	health : 100,
     hungry : 50,
 	toilet : 0,
@@ -15,7 +20,6 @@ var pet = ({
 	money : 1500,
 	happiness : 50,
 	inventory : 0,
-	level : 1
 })
 
 /* Object food */
@@ -54,18 +58,95 @@ item[9] = new food("", "", "", "", "");
 var select = "";
 var select2 = "";
 
+function NewGame() {
+	document.getElementById('buttonStart').style.animation = 'bounceOut 0.5s forwards';
+	document.getElementById('buttonLoad').style.animation = 'bounceOut 0.5s forwards';
+
+	setTimeout(function () {
+		document.getElementById('buttonConfirm').style.display = 'block';
+		document.getElementById('inputName').style.display = 'block';
+		document.getElementById('buttonConfirm').style.animation = 'bounceIn 0.5s forwards';
+		document.getElementById('inputName').style.animation = 'bounceIn 0.5s forwards';
+	}, 1000)
+} 
+
+function confirmName() {
+
+	if(document.getElementById('inputName').value != "")
+	{
+		document.getElementById('Logo').style.animation = 'bounceOut 1s forwards';
+		setTimeout(function (){
+			pet.name = document.getElementById('inputName').value;
+			document.getElementById('window').style.display = 'block';
+			document.getElementById('window').style.animation = 'bounceIn 0.5s forwards';
+			document.getElementById('Logo1').style.display = 'block';
+			document.getElementById('Logo1').style.animation = 'bounceIn 1s forwards';
+			document.getElementById('Logo2').style.display = 'block';
+			document.getElementById('Logo2').style.animation = 'bounceIn 1.2s forwards';
+			document.getElementById('buttonConfirm').style.display = 'none';
+			document.getElementById('inputName').style.display = 'none';
+			print();
+		}, 1000)
+		introduction();
+	}
+	else
+	{
+		alert('No name inserted');	
+	}
+}
+
+function welcome(data) {
+
+    window.onload = date_time('date');
+    window.onbeforeunload = function(event)
+    {
+        return 'I dati di gioco verranno salvati AUTOMATICAMENTE'
+    };
+}
+
+function introduction() {
+
+    canvas = document.getElementById('canvas');
+    canvas.style.display = 'block';
+    canvas.style.animation = 'darker 2s forwards';
+    setTimeout(function () {canvas.style.animation = 'lighter 2s forwards';}, 3000);
+    setTimeout(function () {canvas.style.display = 'none';}, 5000);
+}
+
+function TimeStamp() {
+
+	var TimeStamp = Math.floor(Date.now() / 1000);
+	TimeStamp = TimeStamp / 60;
+	TimeStamp = TimeStamp / 60;
+	return TimeStamp;
+}
+
 /* That function print the stats of the pet getting by id*/
 function print() {
 
+
+	if(pet.health < 50) {
+		document.getElementById('health').style.color = '#FF4136'
+	}else { document.getElementById('health').style.color = '#3D9970';}
+
+	if(pet.hungry < 40) {
+		document.getElementById('hungry').style.color = '#FF4136';
+	}else { document.getElementById('hungry').style.color = '#3D9970';}
+
+	if(pet.happiness < 40) {
+		document.getElementById('happiness').style.color = '#FF4136';
+	}else { document.getElementById('happiness').style.color = '#3D9970';}
+
 	document.getElementById('name').innerHTML = 'Name: ' + pet.name + '\n\n';
-	document.getElementById('level').innerHTML = 'Level: ' + pet.level + '\n';
+	document.getElementById('grownPoint').innerHTML = 'GPoint: ' + pet.grownPoint + '\n\n';
 	document.getElementById('health').innerHTML = 'Health: ' + pet.health + '\n';
 	document.getElementById('hungry').innerHTML = 'Hungry: ' + pet.hungry + '\n';
 	document.getElementById('strenght').innerHTML =	'Strenght: ' + pet.strenght + '\n';
 	document.getElementById('agility').innerHTML = 'Agility: ' + pet.agility + '\n';
-	document.getElementById('weight').innerHTML = 'Weight: ' + pet.weight + '\n';
+	document.getElementById('weight').innerHTML = 'Weight: ' + pet.weight + 'g\n';
 	document.getElementById('happiness').innerHTML = 'Happiness: ' + pet.happiness + '\n';
 	document.getElementById('money').innerHTML = pet.money + '$\n';
+
 }
 
 /* Function that select the object (Graphic) */
@@ -75,6 +156,19 @@ function selectBuy(foodToBuy) {
 	selectToBuy.style.opacity = 1;
 	selectToBuy.style.animation = "pulse 0.5s ease infinite";
 	select = selectToBuy.getAttribute('name');
+	log = document.getElementById('log');
+
+	for(index2L=0;index2L<10;index2L++) {
+
+		if(shop[index2L].name == select)
+		{
+			log.value = log.value + 'Food: ' + shop[index2L].name +'\n';
+			log.value = log.value + 'Hungry: ' + shop[index2L].lessHungry +'\n';
+			log.value = log.value + 'Calories: +' + shop[index2L].plusWeight +'g\n';
+			log.value = log.value + 'Happiness: ' + shop[index2L].plusHappiness +'\n';
+			log.value = log.value + 'Price: ' + shop[index2L].price +'\n';
+		}
+	}
 	for(i=0;i<10;i++) {
 
 		Deselect = document.getElementById(shop[i].name);
@@ -84,6 +178,7 @@ function selectBuy(foodToBuy) {
 			Deselect.style.animation = 'none';
 		}
 	}
+	ScrollBottom();
 }
 
 /* Function buy after selectBuy (Logic) */
@@ -170,6 +265,8 @@ function buy() {
 	if(pet.inventory==10) 
 		log.value = log.value + 'Inventory Full! \n\n';
 
+	ScrollBottom();
+
 }
 
 /* Select the food (Graphic) */
@@ -198,7 +295,10 @@ function selectFeed(foodToFeed) {
 /* Feed function that incrase the stats of the pet and more... */
 function feed() {
 
+	message = document.getElementById('message');
+	balloon = document.getElementsByClassName('speech-bubble');
 
+	print();
 	if(pet.hungry < 100 && select2 != "") {
 
 		
@@ -209,25 +309,47 @@ function feed() {
 		// Calcolo aggiutivo della FAME
 		pet.hungry = parseInt(pet.hungry) + parseInt(item[IndexDelete].lessHungry);
 
-		if(pet.hungry > 100) {
+		if(pet.hungry >= 100) {
 			pet.hungry = 100;
 			log.value = log.value + pet.name + ": I'm FULL!\n";
+			message.innerHTML = "I'm full...!";
+			balloon[0].style.animation = 'appear 2s forwards';
+			setTimeout(function () {balloon[0].style.animation = 'disappear 2s forwards';}, 4000)
+			
+			print();
 		}
 
 		// Calcolo aggiuntivo al PESO e alla FELICITA'
 		pet.weight = parseInt(pet.weight) + parseInt(item[IndexDelete].plusWeight);
 		pet.happiness = parseInt(pet.happiness) + parseInt(item[IndexDelete].plusHappiness);
 
-		if(pet.happiness > 100) {
+		if(pet.happiness >= 100) {
 			pet.happiness = 100;
 			log.value = log.value + pet.name + " is HAPPY!\n";
+			message.innerHTML = "Thank you!";
+			balloon[0].style.animation = 'appear 2s forwards';
+			setTimeout(function () {balloon[0].style.animation = 'disappear 2s forwards';}, 4000)
 		}
 
 		// Stampa tutto nel LOG
 		log.value = log.value + 'Feeded with ' + item[IndexDelete].name + '\n';
-		log.value = log.value + pet.name + ' Hungry incrased to ' + pet.hungry + '\n';
-		log.value = log.value + pet.name + ' Weight incrased to ' + pet.weight + '\n';
-		log.value = log.value + pet.name + ' Happiness incrased to ' + pet.happiness + '\n\n';
+		log.value = log.value + pet.name + ' Hungry incrased/decreased to ' + pet.hungry + '\n';
+		log.value = log.value + pet.name + ' Weight incrased/decreased to ' + pet.weight + '\n';
+		log.value = log.value + pet.name + ' Happiness incrased/decreased to ' + pet.happiness + '\n\n';
+
+		if(item[IndexDelete].name == "fish" || item[IndexDelete].name == "sushi") {
+			growUp(20);
+			log.value = log.value + pet.name + " +20 GPoint\n"
+		} else if(item[IndexDelete].name == "bread" || item[IndexDelete].name == "fruits" || item[IndexDelete].name == "salad") {
+			growUp(5);
+			log.value = log.value + pet.name + " +5 GPoint\n"
+		} else if(item[IndexDelete].name == "chocolate" || item[IndexDelete].name == "chips" || item[IndexDelete].name == "spaghetti") {
+			growUp(10);
+			log.value = log.value + pet.name + " +10 GPoint\n"
+		} else {
+			growUp(15);
+			log.value = log.value + pet.name + " +15 GPoint\n"
+		}
 
 		// Eliminazione dell'oggetto dall'array parte logica //
 		item[IndexDelete].name = "";
@@ -242,9 +364,31 @@ function feed() {
 		toFeed.setAttribute('value', -1);
 		toFeed.style.animation = 'none';
 		pet.inventory = pet.inventory - 1;
-	} else if(pet.hungry >= 100) { log.value = log.value + "I'm not hungry...\n"; }
-	  else if(select2 == "") { log.value = log.value + "No food selected! Please select one\n"; }
+	}
+	else if(pet.hungry >= 100) {
+		log.value = log.value + "I'm not hungry...\n"; 
+		message.innerHTML = "I'm not hungry...";
+		balloon[0].style.animation = 'appear 2s forwards';
+		setTimeout(function () {balloon[0].style.animation = 'disappear 2s forwards';}, 4000)
+	}
+	else if(select2 == "")
+		log.value = log.value + "No food selected! Please select one\n"; 
 
-	  print();
+	ScrollBottom();
+	print();
 }
 
+
+function ScrollBottom() {
+
+	log = document.getElementById('log');
+   	log.scrollTop = log.scrollHeight;
+}
+
+
+/*
+function GameOverCheck() {
+
+	if(pet.health == 0)
+
+} */

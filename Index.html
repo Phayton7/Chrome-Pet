@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<html>
+<html overflow='auto'>
 	<head>
-	<title>HiPet</title>
+	<title>Chrome Pet - Own pet simulator</title>
 		<meta charset="utf-8">
 		<link rel="stylesheet" type="text/css" href="css/index.css" />
 		<link rel="stylesheet" type="text/css" href="css/index2.css" />
@@ -11,21 +11,27 @@
 		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
 		<script type="text/javascript" src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 		<script type="text/javascript" src="http://www.pureexample.com/js/lib/jquery.ui.touch-punch.min.js"></script>	
-		<script src="js/js.js"></script>
+		<script src="js/js1.js"></script>
 		<script src="js/js2.js"></script>
 		<script src="js/js3.js"></script>
-		
 	</head>
-	<body onLoad='print(), welcome("date")'>
+	<body onUnload='save()'>
+		
 		<div id='Logo1' ></div>
 		<div id='Logo2' ></div>
+		<center>
+			<button class='button' id='buttonStart' onClick='NewGame();'>NEW GAME</button>
+			<button class='button' id='buttonLoad' onClick='load(), welcome("date")' >LOAD GAME</button>
+			<input type='text' id='inputName' maxlenght='14' placeholder='Welcome! Choose Pet Name' >
+			<button class='button' id='buttonConfirm' onClick='NewGame(), confirmName(), print(), welcome("date")'>CONFIRM</button>
+		</center>
 		<div id='window'>
-
+			
 			<div id='quest'></div>	
 			<div id='buttonFeed' onClick='HideShow("Inventory")'></div>
 			<div id='buttonHeal' ></div>
 			<div id='buttonGym' onclick='print(),HideShow("Gym"), reset()'></div>
-			<div id='buttonWC'></div>
+			<div id='buttonWC' onClick='clean()'></div>
 			<div id='buttonShop' onClick='HideShow("shopWindow")'></div>
 			<span id="date"></span>
 			<textarea id='log' disabled></textarea>
@@ -34,12 +40,17 @@
 				<span class='stat' id='money' style='font-size: 16px; font-family: 'calibri'; bottom:'></span></br>
 			</div>
 
-			<div id='pet'>
+			<div id='pet'></div>
+			<div id='poop'></div>
+
+			<div class="speech-bubble">
+				<div class="arrow bottom right"></div>
+				  <p id='message'>Thinking...</p>
 			</div>
 
 			<div id='statistics'>
 				<span class='stat' id='name'></span></br>
-				<span class='stat' id='level'></span></br>
+				<span class='stat' id='grownPoint'></span></br>
 				<span class='stat' id='health'></span></br>
 				<span class='stat' id='hungry'></span></br>
 				<span class='stat' id='strenght'></span></br>
@@ -49,52 +60,55 @@
 			</div>
 			<text id='stats' >STATS</text>
 
+			<div id='shopWindow' name='shopWindow' onClick='setFocus("shopWindow","Inventory")'>
+
+		  		<div class='foods' id='bread' value='0' name='bread' onClick='selectBuy("bread")'></div>
+		  		<div class='foods' id='fruits' value='1' name='fruits' onClick='selectBuy("fruits")'></div>
+		  		<div class='foods' id='salad' value='2' name='salad' onClick='selectBuy("salad")'></div>
+		  		<div class='foods' id='chocolate' value='3' name='chocolate' onClick='selectBuy("chocolate")'></div>
+		  		<div class='foods' id='chips' value='4' name='chips' onClick='selectBuy("chips")'></div>
+		  		<div class='foods' id='spaghetti' value='5' name='spaghetti' onClick='selectBuy("spaghetti")'></div>
+		  		<div class='foods' id='fish' value='6' name='fish' onClick='selectBuy("fish")'></div>
+		  		<div class='foods' id='sushi' value='7' name='sushi' onClick='selectBuy("sushi")'></div>
+		  		<div class='foods' id='chicken' value='8' name='chicken' onClick='selectBuy("chicken")'></div>
+		  		<div class='foods' id='hamburger' value='9' name='hamburger' onClick='selectBuy("hamburger")'></div>
+		  		<div id='buttonBuy' onClick='buy(), print();'></div>
+		  		<div class='buttonClose' onClick='HideShow("shopWindow")'></div>
+		  		<img id='drag1' src='css/image/drag.png'>
+	 	 	</div>
+
+		  	<div id='Inventory' name='Inventory' onClick='setFocus("Inventory","shopWindow")'>
+		  		<div class='ownedFoods' id='i0' value='-1' name='plate' onClick='selectFeed("i0")'></div>
+		  		<div class='ownedFoods' id='i1' value='-1' name='plate' onClick='selectFeed("i1")'></div>
+		  		<div class='ownedFoods' id='i2' value='-1' name='plate' onClick='selectFeed("i2")'></div>
+		  		<div class='ownedFoods' id='i3' value='-1' name='plate' onClick='selectFeed("i3")'></div>
+		  		<div class='ownedFoods' id='i4' value='-1' name='plate' onClick='selectFeed("i4")'></div>
+		  		<div class='ownedFoods' id='i5' value='-1' name='plate' onClick='selectFeed("i5")'></div>
+		  		<div class='ownedFoods' id='i6' value='-1' name='plate' onClick='selectFeed("i6")'></div>
+		  		<div class='ownedFoods' id='i7' value='-1' name='plate' onClick='selectFeed("i7")'></div>
+		  		<div class='ownedFoods' id='i8' value='-1' name='plate' onClick='selectFeed("i8")'></div>
+		  		<div class='ownedFoods' id='i9' value='-1' name='plate' onClick='selectFeed("i9")'></div>
+		  		<div id='buttonClose2' onClick='HideShow("Inventory")'></div>
+		  		<div id='buttonFeedIt' onClick='feed()'></div>
+		  		<img id='drag2' src='css/image/drag.png'>
+		  		<div class='buttonClose' onClick='HideShow("Inventory")'></div>
+		  	</div>
+		  	<div id='Gym'>
+				<div id='buttonClose2' onClick='HideShow("Gym")'></div>
+				<p align ='center' id='gymText'> How long do you take </br> to click 100 times? Let's see!</p>	
+				<span align ='center' id='time'>Second: 0</span> <br>
+			    <span align= 'center' id='score'>Score: -</span> <br>
+				<div id='gymButton' onClick='Start(), TimeCount()'></div>
+				<div id='clickButton' onClick='RapidClick()'></div>	
+				<img id='drag3' src='css/image/drag.png'>
+				<div class='buttonClose2' onClick='HideShow("Gym")'></div>
+			</div>
+
 		</div>
-
-		<div id='shopWindow' name='shopWindow' onClick='setFocus("shopWindow","Inventory")'>
-
-	  		<div class='foods' id='bread' value='0' name='bread' onClick='selectBuy("bread")'></div>
-	  		<div class='foods' id='fruits' value='1' name='fruits' onClick='selectBuy("fruits")'></div>
-	  		<div class='foods' id='salad' value='2' name='salad' onClick='selectBuy("salad")'></div>
-	  		<div class='foods' id='chocolate' value='3' name='chocolate' onClick='selectBuy("chocolate")'></div>
-	  		<div class='foods' id='chips' value='4' name='chips' onClick='selectBuy("chips")'></div>
-	  		<div class='foods' id='spaghetti' value='5' name='spaghetti' onClick='selectBuy("spaghetti")'></div>
-	  		<div class='foods' id='fish' value='6' name='fish' onClick='selectBuy("fish")'></div>
-	  		<div class='foods' id='sushi' value='7' name='sushi' onClick='selectBuy("sushi")'></div>
-	  		<div class='foods' id='chicken' value='8' name='chicken' onClick='selectBuy("chicken")'></div>
-	  		<div class='foods' id='hamburger' value='9' name='hamburger' onClick='selectBuy("hamburger")'></div>
-	  		<div id='buttonBuy' onClick='buy(), print();'></div>
-	  		<div class='buttonClose' onClick='HideShow("shopWindow")'></div>
-	  		<img id='drag1' src='css/image/drag.png'>
-	  	</div>
-
-	  	<div id='Inventory' name='Inventory' onClick='setFocus("Inventory","shopWindow")'>
-	  		<div class='ownedFoods' id='i0' value='-1' name='plate' onClick='selectFeed("i0")'></div>
-	  		<div class='ownedFoods' id='i1' value='-1' name='plate' onClick='selectFeed("i1")'></div>
-	  		<div class='ownedFoods' id='i2' value='-1' name='plate' onClick='selectFeed("i2")'></div>
-	  		<div class='ownedFoods' id='i3' value='-1' name='plate' onClick='selectFeed("i3")'></div>
-	  		<div class='ownedFoods' id='i4' value='-1' name='plate' onClick='selectFeed("i4")'></div>
-	  		<div class='ownedFoods' id='i5' value='-1' name='plate' onClick='selectFeed("i5")'></div>
-	  		<div class='ownedFoods' id='i6' value='-1' name='plate' onClick='selectFeed("i6")'></div>
-	  		<div class='ownedFoods' id='i7' value='-1' name='plate' onClick='selectFeed("i7")'></div>
-	  		<div class='ownedFoods' id='i8' value='-1' name='plate' onClick='selectFeed("i8")'></div>
-	  		<div class='ownedFoods' id='i9' value='-1' name='plate' onClick='selectFeed("i9")'></div>
-	  		<div id='buttonClose2' onClick='HideShow("Inventory")'></div>
-	  		<div id='buttonFeedIt' onClick='feed()'></div>
-	  		<img id='drag2' src='css/image/drag.png'>
-	  		<div class='buttonClose' onClick='HideShow("Inventory")'></div>
-	  	</div>
-	  	<div id='Gym'>
-			<div id='buttonClose2' onClick='HideShow("Gym")'></div>
-			<p align ='center' id='gymText'> How long do you take </br> to click 100 times? Let's see!</p>	
-			<span align ='center' id='time'>Second: 0</span> <br>
-		    <span align= 'center' id='score'>Score: -</span> <br>
-			<div id='gymButton' onClick='Start(), TimeCount()'></div>
-			<div id='clickButton' onClick='RapidClick()'></div>	
-			<img id='drag3' src='css/image/drag.png'>
-			<div class='buttonClose2' onClick='HideShow("Gym")'></div>
-		</div>
+		<div id='canvas'><center><p id='welcome'>WELCOME</p></center></div>
 		
+		<img id='Logo' src='css/logo/LOGO.png'>
+
 	</body>
 	
 </html>
