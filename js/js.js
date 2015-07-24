@@ -599,6 +599,7 @@ $(function () {
                 });
 });
 
+
 /*Gym-function that start a counter until the training is finished.*/
 function TimeCount() {
 
@@ -706,7 +707,7 @@ function openApplicationDelay(){
 	delay = Math.round(delay/1000);
 }
 
-
+/*Time-function that prints the minutes delay between open/closed time.*/
 function printTime(){
 	log = document.getElementById('log');
 	log.value= log.value + 'Close Time : ' + timeClose + '\n\n'; 
@@ -714,16 +715,23 @@ function printTime(){
 	log.value= log.value + 'Minutes after the application is closed : '+ Math.round(delay/60) + '\n\n'; 
 }
 
+/*GameLogic-function that decrease stat during the game*/
 function decreaseStatInGame(){	
 	interval_0 = setInterval(controlDesease, 1000);
-	interval_1 = setInterval(critState, 1000*45*s);
-	interval_2 = setInterval(mediumState, 1000*90*s);
-	interval_3 = setInterval(modarateState, 1000*180*s);
+	interval_1 = setInterval(decreaseHungry, 1000*30*s);
+	interval_2 = setInterval(critState, 1000*60*s);
+	interval_3 = setInterval(mediumState, 1000*120*s);
+	interval_4 = setInterval(modarateState, 1000*240*s);
 	
 	function controlDesease(){
 	if (desease == 0)
 		s = 45;
 	else { s = 60; }
+	}
+
+	function decreaseHungry(){
+		pet.hungry -- ;
+		print();
 	}
 
 	function critState(){
@@ -741,6 +749,7 @@ function decreaseStatInGame(){
 			if (pet.happiness<10){
 				pet.health -- ;
 			}
+		print();
 	}	
 
 	function mediumState(){	
@@ -759,7 +768,7 @@ function decreaseStatInGame(){
 			if (pet.happiness<=10 && pet.happiness<25){
 				pet.health -- ;
 			}
-			print();
+		print();
 	}
 
 	function modarateState(){
@@ -778,22 +787,23 @@ function decreaseStatInGame(){
 			if (pet.happiness>75){
 				pet.health ++ ;
 			}
+		print();
 	}
 }
 
-/*Time-function that decrease stat at the opening of the application based on the minutes passed by the closure*/
+/*GameLogic-function that decrease stat at the opening of the application based on the minutes passed by the closure*/
 function decreaseStatOutGame(){
 	s = 60;
 	if (desease == 0)
 	s = 45;
 
-	for (i=1; i<=delay; i++){
+	for (i=1; i<=delay/60; i++){
 
-		if (i%(20*s) == 0){
+		if (i%(30*s/60) == 0){
 			pet.hungry -- ;		
 		}
 
-		if (i%(45*s) == 0){
+		if (i%(60*s/60) == 0){
 
 			if (pet.weight> 100){
 				pet.hungry--;
@@ -813,7 +823,7 @@ function decreaseStatOutGame(){
 		}
 
 
-		if (i%(90*s) == 0){
+		if (i%(120*s/60) == 0){
 
 			if (pet.weight>=75 && pet.weight<100){
 				pet.hungry--;
@@ -832,7 +842,7 @@ function decreaseStatOutGame(){
 
 		}
 
-		if (i%(180*s) == 0){
+		if (i%(240*s/60) == 0){
 
 			if (pet.weight>=50 && pet.weight<75){
 				pet.happiness --;
@@ -855,22 +865,24 @@ function decreaseStatOutGame(){
 	}
 }
 
+/*GameLogic-function that check if the pet get sick in game.*/
 function checkDeseaseInGame(){
 	s = 60;
 	setTimeout(startCycle, 1000);
+
 	function startCycle(){
 		if(pet.health<10)
-			interval_4 = setInterval(checkDesease, 10*30);
+			interval_5 = setInterval(checkDesease, 1000*30*s);
 
 		if(pet.health >=10 && pet.health<25)
-			interval_4 = setInterval(checkDesease, 1000*45*s);
+			interval_5 = setInterval(checkDesease, 1000*45*s);
 
 		if(pet.health >=25 && pet.health<50)
-			interval_4 = setInterval(checkDesease, 1000*60*s);
+			interval_5 = setInterval(checkDesease, 1000*60*s);
 	}
 
 	function checkDesease(){
-		desease = Math.floor((Math.random() * 10) );
+		desease = Math.floor((Math.random() * 20) );
 
 		if(desease == 0){
 			clearInterval(interval_4);	
@@ -879,34 +891,37 @@ function checkDeseaseInGame(){
 	}
 }
 
+/*GameLogic-function that check if the pet get sick out game.*/
 function checkDeseaseOutGame(){
 	s = 60;
 	log = document.getElementById('log');
 
-    for (i=1; i<delay; i++){
+    for (i=1; i<delay/60; i++){
 
     	if (desease != 0){
 
-			if (i%(30*s) == 0){
+			if (i%(30*s/60) == 0){
 
 				if(pet.health<10){
-					desease = Math.floor((Math.random() * 10) );
+					desease = Math.floor((Math.random() * 20) );
 					log.value = log.value + 'Desease Value ' + desease + '\n\n' ;
 				}	
 			}
 
-			if (i%(45*s) == 0){
+			if (i%(45*s/60) == 0){
 
-				if(pet.health >=10 && pet.health<25)
-					desease = Math.floor((Math.random() * 10) );
+				if(pet.health >=10 && pet.health<25){
+					desease = Math.floor((Math.random() * 20) );
 					log.value = log.value + 'Desease Value ' + desease + '\n\n' ;
+				}
 			}
 
-			if (i%(60*s) == 0){
+			if (i%(60*s/60) == 0){
 
-				if(pet.health >=25 && pet.health<50)
-					desease = Math.floor((Math.random() * 10) );
+				if(pet.health >=25 && pet.health<50){
+					desease = Math.floor((Math.random() * 20) );
 					log.value = log.value + 'Desease Value ' + desease + '\n\n' ;
+				}
 			}
 		}
 	}
@@ -914,11 +929,34 @@ function checkDeseaseOutGame(){
 		log.value = log.value + 'Oh no! Pet get sick.\n\n' ;
 }
 
+/*GameLogic-function that check if the pet get sick in game.*/
+function increaseMoneyInGame(){
+
+	interval_6 = setInterval(increaseMoney, 1000*10*s);
+
+	function increaseMoney(){
+		pet.money++;
+	}	
+}
+
+/*GameLogic-function that check if the pet get sick in game.*/
+function increaseMoneyOutGame(){
+	s = 60;
+	for (i=1; i<=delay/60; i++){
+
+		if (i%(10*s/60) == 0)
+			pet.money ++ ;		
+	}
+}
+
+/*GameLogic-function that heal the pet when it get sick.*/
 function heal(){
 	point = pet.health;
 	cost = 250+50-point;
 	if (desease == 0 && pet.money >= cost){
 		desease = 1;
+
+	
 		pet.health = 50;
 		pet.money = pet.money - cost;
 		log.value = log.value + 'Pet is healed.\nYou payed' + cost + '$. \n\n';
@@ -928,5 +966,3 @@ function heal(){
 	else if (desease == 1) { log.value = log.value + "Pet don't need to get healed.\n\n" ; }
 	else if (pet.money < cost) { log.value = log.value + "You can't afford this heal.\n\n" ; }
 }
-
-
