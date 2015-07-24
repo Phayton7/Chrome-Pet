@@ -11,27 +11,26 @@
 		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
 		<script type="text/javascript" src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 		<script type="text/javascript" src="http://www.pureexample.com/js/lib/jquery.ui.touch-punch.min.js"></script>	
-		<script src="js/js1.js"></script>
+		<script src="js/js.js"></script>
 
 	</head>
-	<body onUnload='save()'>
+	<body onUnload='save(), closeTime();' >
 		
 		<div id='Logo1' ></div>
 		<div id='Logo2' ></div>
 		<center>
 			<button class='button' id='buttonStart' onClick='NewGame();'>NEW GAME</button>
-			<button class='button' id='buttonLoad' onClick='load(), welcome("date")' >LOAD GAME</button>
+			<button class='button' id='buttonLoad' onClick='LoadGame()' >LOAD GAME</button>
 			<input type='text' id='inputName' maxlenght='14' placeholder='Welcome! Choose Pet Name' >
-			<button class='button' id='buttonConfirm' onClick='NewGame(), confirmName(), print(), welcome("date")'>CONFIRM</button>
+			<button class='button' id='buttonConfirm' onClick='confirmName()'>CONFIRM</button>
 		</center>
 		<div id='window'>
 			
 			<div id='quest'></div>	
 			<div id='buttonFeed' onClick='HideShow("Inventory")'></div>
-			<div id='buttonHeal' onclick='heal()'></div>
+			<div id='buttonHeal' ></div>
 			<div id='buttonGym' onclick='print(),HideShow("Gym"), reset()'></div>
 			<div id='buttonWC' onClick='clean()'></div>
-
 			<div id='buttonShop' onClick='HideShow("shopWindow")'></div>
 			<span id="date"></span>
 			<textarea id='log' disabled></textarea>
@@ -103,11 +102,9 @@
 				<img id='drag3' src='css/image/drag.png'>
 				<div class='buttonClose2' onClick='HideShow("Gym")'></div>
 			</div>
-			<text id='stats' >STATS</text>
 
 		</div>
 		<div id='canvas'><center><p id='welcome'>WELCOME</p></center></div>
-
 		
 		<img id='Logo' src='css/logo/LOGO.png'>
 
