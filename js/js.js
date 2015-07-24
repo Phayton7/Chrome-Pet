@@ -1029,8 +1029,6 @@ function decreaseStatInGame(){
 				pet.health ++ ;
 			}
 	}
-
-	}
 }
 
 /*Time-function that decrease stat at the opening of the application based on the minutes passed by the closure*/
