@@ -134,7 +134,6 @@ body
 }
 
 #Logo1{
-
 	position: absolute;
 	width: 190px;
 	height: 430px;
@@ -274,6 +273,28 @@ body
 	font-size: 22px;
 	color: #2ECC40;
 	left: 910px;
+	top: 70px;
+	-webkit-transform: rotate(90deg);
+	test-shadow: 2px 2px orange;
+}
+
+#stats{
+	position: absolute;
+	font-family: space;
+	font-size: 12px;
+	color: #7CA5FC;
+	left: 40px;
+	top: 0px;
+}
+
+#logtxt{
+	position: absolute;
+	top: 10px;
+	right: 0px;
+	font-family: space;
+	font-size: 22px;
+	color: #7CA5FC;
+	left: 895px;
 	top: 70px;
 	-webkit-transform: rotate(90deg);
 	test-shadow: 2px 2px orange;
@@ -554,3 +575,4 @@ body
 	font-family: smart;
 	src: url('font/Smart_Kid.otf');
 }
+

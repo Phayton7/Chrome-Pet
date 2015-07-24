@@ -12,8 +12,7 @@
 		<script type="text/javascript" src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 		<script type="text/javascript" src="http://www.pureexample.com/js/lib/jquery.ui.touch-punch.min.js"></script>	
 		<script src="js/js1.js"></script>
-		<script src="js/js2.js"></script>
-		<script src="js/js3.js"></script>
+
 	</head>
 	<body onUnload='save()'>
 		
@@ -29,9 +28,10 @@
 			
 			<div id='quest'></div>	
 			<div id='buttonFeed' onClick='HideShow("Inventory")'></div>
-			<div id='buttonHeal' ></div>
+			<div id='buttonHeal' onclick='heal()'></div>
 			<div id='buttonGym' onclick='print(),HideShow("Gym"), reset()'></div>
 			<div id='buttonWC' onClick='clean()'></div>
+
 			<div id='buttonShop' onClick='HideShow("shopWindow")'></div>
 			<span id="date"></span>
 			<textarea id='log' disabled></textarea>
@@ -103,9 +103,11 @@
 				<img id='drag3' src='css/image/drag.png'>
 				<div class='buttonClose2' onClick='HideShow("Gym")'></div>
 			</div>
+			<text id='stats' >STATS</text>
 
 		</div>
 		<div id='canvas'><center><p id='welcome'>WELCOME</p></center></div>
+
 		
 		<img id='Logo' src='css/logo/LOGO.png'>
 
