@@ -1,13 +1,6 @@
 
 var shop = new Array();
 var item = new Array();
-/*Variables used to limit */
-var currentDay;
-var changeDay;
-var feedCounter = 0;
-var trainingCounter = 0;
-var checkFeedToday = 1;
-var checkTrainingToday= 1; 
 
 /*Gym check status Variables*/
 var score = 0;
@@ -17,6 +10,8 @@ var t;
 var nClick = 100;
 var nTraining=0;
 var myVar;
+
+var currentDay;
 
 /* Variables for the time when the application is close.*/
 var timeStart; 
@@ -135,9 +130,12 @@ function LoadGame() {
 	load();
 	print();
 	decreaseStatInGame(); 
-	decreaseStatOutGame();
+	checkDeseaseInGame();	
+	increaseMoneyInGame();
 	checkDeseaseInGame();
+	decreaseStatOutGame();
 	checkDeseaseOutGame();
+	increaseMoneyOutGame();
 	evolutionControl();
 }
 
@@ -293,6 +291,9 @@ function buy() {
 		item[emptySlotL].plusWeight = shop[IndexFood].plusWeight;
 		item[emptySlotL].plusHappiness = shop[IndexFood].plusHappiness;
 		item[emptySlotL].price = shop[IndexFood].price;
+		if (currentDay == 'Wednesday' || currentDay == 'Saturday')	
+			shop[IndexFood].price = Math.round(shop[IndexFood].price/100*70);
+
 		pet.money = pet.money - shop[IndexFood].price;
 
 		name = item[emptySlotL].name;
@@ -425,7 +426,6 @@ function feed() {
 	print();
 }
 
-
 function ScrollBottom() {
 
 	log = document.getElementById('log');
@@ -474,6 +474,7 @@ function date_time(id) {
                 s = "0"+s;
         }
         result = ''+days[day]+' '+months[month]+' '+d+' - '+h+':'+m;
+        currentDay = days[day];
 
         checkTime(h);
         document.getElementById(id).innerHTML = result;
@@ -496,6 +497,10 @@ function printDate() {
 
         log = document.getElementById('log');
         log.value = log.value + toString;
+        if (day == 2 || day == 5)
+        	 log.value = log.value + "Today the Gym grant you a 30% discount! \n\n";
+        if (day == 3 || day == 6)
+        	 log.value = log.value + "Today the Food Shop grant you a 30% discount! \n\n";
 }
 
 /* Time checker for background change */
@@ -710,17 +715,25 @@ function Start() {
 	score=0;
 	log = document.getElementById('log');
 
-	if(pet.hungry > 40)
+	if(pet.hungry > 40 && pet.money > 100)
 	{
+		cost = 100;
 		document.getElementById('gymButton').style.display = 'none';
 		document.getElementById('clickButton').style.display = 'block';
+
+		if (currentDay == 'Monday' || currentDay == 'Thursday')
+			cost = cost/100*70;
+
+		pet.money = pet.money - cost;
 		pet.hungry = pet.hungry - 10;
-		pet.money = pet.money - 100;
+
+
 		log.value = log.value + 'Hungry -10\n';
-		log.value = log.value + 'Money -100\n\n'
+		log.value = log.value + 'Money -' + cost + '\n\n'
 
 		print()
-	} else {log.value = log.value + "You can't train without eating\n\n "; return false;}
+	} else if (pet.hungry>40) {log.value = log.value + "You can't train without eating.\n\n "; return false;}
+	  else if (pet.money >40) {log.value = log.value + "You can't afford this training.\n\n "; return false;}
 }
 
 function RapidClick() {
@@ -739,7 +752,6 @@ function RapidClick() {
 		document.getElementById('score').innerHTML = 'Score: ' + score;
 	}
 }
-
 
 // Poop 
 function poop() {
@@ -917,23 +929,6 @@ function loadItem() {
 //////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-/*Function that check if the pet ate 3 times today.*/
-function checkFeed(){
-
-	if (feedCounter == 3)
-		checkFeedToday = 0;
-	else checkFeedToday = 1;
-}
-
-
-/*Function that check if the pet trained 3 times today.*/
-function checkTraining(){
-
-	if (trainingCounter == 3)
-		checkTrainingToday = 0;
-	else checkTrainingToday = 1;
-}
-
 
 function timePassed(){
 
@@ -955,7 +950,6 @@ function printTime(){
 	log.value= log.value + 'Start Time : ' + timeStart + '\n\n'; 
 	log.value= log.value + 'Minutes after the application is closed : '+ Math.round(delay/60) + '\n\n'; 
 }
-
 
 
 /*GameLogic-function that decrease stat during the game*/
@@ -1198,7 +1192,6 @@ function decreaseStatOutGame(){
 	log.value = log.value + 'Health -' + health + '\n';
 	log.value = log.value + "Money +" + money + '$\n\n';
 	ScrollBottom();
-
 }
 
 /*GameLogic-function that check if the pet get sick in game.*/
@@ -1207,18 +1200,18 @@ function checkDeseaseInGame(){
 	setTimeout(startCycle, 1000);
 
 	function startCycle(){
-		if(pet.health<10)
+		if(pet.health< 10+Math.round(pet.strenght/5) )
 			interval_5 = setInterval(checkDesease, 1000*30*s);
 
-		if(pet.health >=10 && pet.health<25)
+		if(pet.health >=10+Math.round(pet.strenght/5)  && pet.health<25+Math.round(pet.strenght/5) )
 			interval_5 = setInterval(checkDesease, 1000*45*s);
 
-		if(pet.health >=25 && pet.health<50)
+		if(pet.health >=25+Math.round(pet.strenght/5) && pet.health<50+Math.round(pet.strenght/5) )
 			interval_5 = setInterval(checkDesease, 1000*60*s);
 	}
 
 	function checkDesease(){
-		desease = Math.floor((Math.random() * 20) );
+		desease = Math.floor( (Math.random()* (15+Math.round(pet.agility/5)) ) );
 
 		if(desease == 0){
 			clearInterval(interval_4);	
@@ -1238,24 +1231,24 @@ function checkDeseaseOutGame(){
 
 			if (i%(30*s/60) == 0){
 
-				if(pet.health<10){
+				if(pet.health< 10+Math.round(pet.strenght/5) ){
 
-					desease = Math.floor((Math.random() * 20) );
+					desease = Math.floor( (Math.random()* (15+Math.round(pet.agility/5)) ) );
 				}	
 			}
 
 			if (i%(45*s/60) == 0){
 
-				if(pet.health >=10 && pet.health<25){
-					desease = Math.floor((Math.random() * 20) );
+				if(pet.health >=10+Math.round(pet.strenght/5)  && pet.health<25+Math.round(pet.strenght/5) ){
+					desease = Math.floor( (Math.random()* (15+Math.round(pet.agility/5)) ) );
 				}
 			}
 
 
 			if (i%(60*s/60) == 0){
 
-				if(pet.health >=25 && pet.health<50){
-					desease = Math.floor((Math.random() * 20) );
+				if(pet.health >=25+Math.round(pet.strenght/5) && pet.health<50+Math.round(pet.strenght/5) ){
+					desease = Math.floor( (Math.random()* (15+Math.round(pet.agility/5)) ) );
 				}
 			}
 		}
@@ -1271,14 +1264,12 @@ function checkDeseaseOutGame(){
 		balloon[0].style.animation = 'appear 2s forwards';
 		setTimeout(function () {balloon[0].style.animation = 'disappear 2s forwards';}, 4000)
 	}
-
-
 }
 
 /*GameLogic-function that check if the pet get sick in game.*/
 function increaseMoneyInGame(){
-
-	interval_6 = setInterval(increaseMoney, 1000*10*s);
+	s = 60;
+	interval_6 = setInterval(increaseMoney, 1000*3*s);
 
 	function increaseMoney(){
 		pet.money++;
@@ -1290,7 +1281,7 @@ function increaseMoneyOutGame(){
 	s = 60;
 	for (i=1; i<=delay/60; i++){
 
-		if (i%(10*s/60) == 0)
+		if (i%(3*s/60) == 0)
 			pet.money ++ ;		
 	}
 }
