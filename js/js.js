@@ -18,8 +18,8 @@ var timeStart;
 var timeClose;
 var delay;
 
-/* Variables for a possible Pet's desease. */
-var desease = 1; 
+/* Variables for a possible Pet's disease. */
+var disease = 1;  
 var interval_1;
 var interval_2;
 var interval_3;
@@ -148,8 +148,8 @@ function LoadGame() {
 		print();
 		decreaseStatInGame(); 
 		decreaseStatOutGame();
-		checkDeseaseInGame();
-		checkDeseaseOutGame();
+		checkDiseaseInGame();
+		checkDiseaseOutGame();
 		increaseMoneyInGame();
 		increaseMoneyOutGame();
 		evolutionControl();
@@ -523,7 +523,6 @@ function printDate() {
         	 log.value = log.value + "Today the Gym grant you a 30% discount! \n\n";
         if (day == 3 || day == 6)
         	 log.value = log.value + "Today the Food Shop grant you a 30% discount! \n\n";
-
 }
 
 /* Time checker for background change */
@@ -1216,52 +1215,58 @@ function decreaseStatOutGame(){
 }
 
 /*GameLogic-function that check if the pet get sick in game.*/
-function checkDeseaseInGame(){
+function checkDiseaseInGame(){
 	s = 60;
 	setTimeout(startCycle, 1000);
+	setTimeout(checkDisease, 1000);
 
 	function startCycle(){
 		if(pet.health< 10+Math.round(pet.strenght/5) )
-			interval_5 = setInterval(checkDesease, 1000*30*s);
+			interval_5 = setInterval(checkDisease, 1000*30*s);
 
 		if(pet.health >=10+Math.round(pet.strenght/5)  && pet.health<25+Math.round(pet.strenght/5) )
-			interval_5 = setInterval(checkDesease, 1000*45*s);
+			interval_5 = setInterval(checkDisease, 1000*45*s);
 
 		if(pet.health >=25+Math.round(pet.strenght/5) && pet.health<50+Math.round(pet.strenght/5) )
-			interval_5 = setInterval(checkDesease, 1000*60*s);
+			interval_5 = setInterval(checkDisease, 1000*60*s);
 	}
 
-	function checkDesease(){
-		desease = Math.floor( (Math.random()* (15+Math.round(pet.agility/5)) ) );
+	function checkDisease(){
+		disease = Math.floor( (Math.random()* (15+Math.round(pet.agility/5)) ) );
 
-		if(desease == 0){
+		if(disease == 0){
 			clearInterval(interval_4);	
-		}
+			message = document.getElementById('message');
+			balloon = document.getElementsByClassName('speech-bubble');
+
+			message.innerHTML = "I don't feel good...";
+			balloon[0].style.animation = 'appear 2s forwards';
+		} else if(disease == 1){ setTimeout(function () {balloon[0].style.animation = 'disappear 2s forwards';}, 4000);};
 
 	}
 }
 
 /*GameLogic-function that check if the pet get sick out game.*/
-function checkDeseaseOutGame(){
+function checkDiseaseOutGame(){
 	s = 60;
 	log = document.getElementById('log');
 
     for (i=1; i<delay/60; i++){
 
-    	if (desease != 0){
+    	if (disease != 0){
 
 			if (i%(30*s/60) == 0){
 
 				if(pet.health< 10+Math.round(pet.strenght/5) ){
 
-					desease = Math.floor( (Math.random()* (15+Math.round(pet.agility/5)) ) );
+					disease = Math.floor( (Math.random()* (15+Math.round(pet.agility/5)) ) );
 				}	
 			}
 
 			if (i%(45*s/60) == 0){
 
 				if(pet.health >=10+Math.round(pet.strenght/5)  && pet.health<25+Math.round(pet.strenght/5) ){
-					desease = Math.floor( (Math.random()* (15+Math.round(pet.agility/5)) ) );
+					disease = Math.floor( (Math.random()* (15+Math.round(pet.agility/5)) ) );
 				}
 			}
 
@@ -1269,22 +1274,24 @@ function checkDeseaseOutGame(){
 			if (i%(60*s/60) == 0){
 
 				if(pet.health >=25+Math.round(pet.strenght/5) && pet.health<50+Math.round(pet.strenght/5) ){
-					desease = Math.floor( (Math.random()* (15+Math.round(pet.agility/5)) ) );
+					disease = Math.floor( (Math.random()* (15+Math.round(pet.agility/5)) ) );
 				}
 			}
 		}
 	}
 
-	if (desease == 0) {
+	message = document.getElementById('message');
+	balloon = document.getElementsByClassName('speech-bubble');
+
+	if (disease == 0) {
 
 		log.value = log.value + 'Oh no! Pet get sick.\n\n' ;
-		message = document.getElementById('message');
-		balloon = document.getElementsByClassName('speech-bubble');
+		
 
 		message.innerHTML = "I don't feel good...";
 		balloon[0].style.animation = 'appear 2s forwards';
-		setTimeout(function () {balloon[0].style.animation = 'disappear 2s forwards';}, 4000)
-	}
+		
+	} else { setTimeout(function () {balloon[0].style.animation = 'disappear 2s forwards';}, 4000); }
 }
 
 /*GameLogic-function that check if the pet get sick in game.*/
@@ -1323,7 +1330,7 @@ function heal(){
 	
 		pet.health = 50;
 		pet.money = pet.money - cost;
-		log.value = log.value + 'Pet is healed.\nYou payed' + cost + '$. \n\n';
+		log.value = log.value + 'Pet is healed.\nYou payed ' + cost + '$. \n\n';
 		checkDeseaseInGame();
 		print();
 	}
