@@ -43,7 +43,7 @@ var pet = ({
 	agility : 1,
 	weight : 5,
 	exp : 0,
-	money : 1500,
+	money : 250,
 	happiness : 50,
 	inventory : 0,
 })
@@ -119,14 +119,13 @@ function confirmName() {
 		alert('No name inserted');	
 	}
 	welcome("date");
+	print();
 	openTime();
 	openApplicationDelay();
 	decreaseStatInGame(); 
 	decreaseStatOutGame();
 	checkDeseaseInGame();
 	checkDeseaseOutGame();
-	getCurrentDay();
-	print();
 
 }
 
@@ -134,15 +133,12 @@ function LoadGame() {
 
 	welcome("date");
 	load();
-	openTime();
-	openApplicationDelay();
+	print();
 	decreaseStatInGame(); 
 	decreaseStatOutGame();
 	checkDeseaseInGame();
 	checkDeseaseOutGame();
-	getCurrentDay();
 	evolutionControl();
-	print();
 }
 
 function welcome(data) {
@@ -177,15 +173,15 @@ function print() {
 	
 	if(pet.health < 50) {
 		document.getElementById('health').style.color = '#FF4136'
-	}else { document.getElementById('health').style.color = '#3D9970';}
+	}else { document.getElementById('health').style.color = '#39CCCC';}
 
 	if(pet.hungry < 40) {
 		document.getElementById('hungry').style.color = '#FF4136';
-	}else { document.getElementById('hungry').style.color = '#3D9970';}
+	}else { document.getElementById('hungry').style.color = '#39CCCC';}
 
 	if(pet.happiness < 40) {
 		document.getElementById('happiness').style.color = '#FF4136';
-	}else { document.getElementById('happiness').style.color = '#3D9970';}
+	}else { document.getElementById('happiness').style.color = '#39CCCC';}
 
 	document.getElementById('name').innerHTML = 'Name: ' + pet.name + '\n\n';
 	document.getElementById('grownPoint').innerHTML = 'GPoint: ' + pet.grownPoint + '\n\n';
@@ -478,6 +474,7 @@ function date_time(id) {
                 s = "0"+s;
         }
         result = ''+days[day]+' '+months[month]+' '+d+' - '+h+':'+m;
+
         checkTime(h);
         document.getElementById(id).innerHTML = result;
 
@@ -485,6 +482,20 @@ function date_time(id) {
         print();
 
         setTimeout('date_time("'+id+'");', 20000);
+}
+
+function printDate() {
+	    date = new Date;
+        year = date.getFullYear();
+        month = date.getMonth();
+        months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+        d = date.getDate();
+        day = date.getDay();
+        days = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+        toString = days[day] + ' ' + months[month] + ' ' + d + ' ' + '\n';
+
+        log = document.getElementById('log');
+        log.value = log.value + toString;
 }
 
 /* Time checker for background change */
@@ -525,7 +536,7 @@ function checkTime(hour) {
             stat[i].style.color = 'blue';
     }
 
-    if(hour > 16 && hour < 19) {
+    if(hour > 16 && hour <= 19) {
 
 
         gameWindow.style.backgroundImage = 'url("./css/bg//background2.gif")';
@@ -549,14 +560,14 @@ function checkTime(hour) {
             stat[i].style.color = 'orange';
     }
 
-    if((hour>19 && hour<23)||(hour > 0 && hour < 5)) {
+    if((hour>19 && hour<=23)||(hour >= 0 && hour < 5)) {
 
         gameWindow.style.backgroundImage = 'url("./css/bg/background3.gif")';
         gameWindow.style.border = '5px solid #091769';
         body.style.backgroundImage = 'url("./css/bg/background3.jpg")';
         statistics.style.border = '2px solid #091769';
         statistics.style.background = '#485AFF';
-        stats.style.color = '#78769D';
+        stats.style.color = 'white';
         date.style.color = 'white';
         date.style.border = '2px solid #091769';
         date.style.background = '#485AFF';
@@ -565,7 +576,7 @@ function checkTime(hour) {
         log.style.border = '2px solid #091769';
         log.style.background = '#1626BA';
         log.style.color = 'white';
-        log2.style.color = '#78769D';
+        log2.style.color = 'white';
         quest.style.border = '2px solid #091769';
         quest.style.background = '#1626BA';
         for(i=0;i<8;i++)
@@ -592,7 +603,7 @@ function growUp(howMuch) {
 
 function evolutionControl() {
 
-    if(pet.grownPoint >= 150 && pet.std == 1) {
+    if(pet.grownPoint >= 500 && pet.std == 1) {
 
         pet.std = 2;
         petAge = document.getElementById('pet');
@@ -629,14 +640,11 @@ $(function () {
 });
 
 
-<<<<<<< HEAD
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// GYM
-=======
 /*Gym-function that start a counter until the training is finished.*/
->>>>>>> c06b5bd... Fixed LogicGame functions.
+
 function TimeCount() {
 
 		log = document.getElementById('log');
@@ -658,16 +666,24 @@ function TimeCount() {
 			} else {log.value = log.value + "Weight decreased by " + c/2 + '\n'; }
 			if(c<10) {
 				growUp(15);
+				pet.agility = pet.agility + 2;
 				log.value = log.value + pet.name + " +15 GPoint\n"
+				log.value = log.value + "Agility +2\n";
 			}
 			if(c>=10 && c<15) {
 				growUp(10);
+				pet.agility++;
+				pet.strenght++;
 				log.value = log.value + pet.name + " +10 GPoint\n"
+				log.value = log.value + "Strenght +1\n";
+				log.value = log.value + "Agility +1\n";
 			}
 			if(c>=15) {
 				growUp(5);
+				pet.strenght = pet.strenght + 2;
 				pet.grownPoint = pet.grownPoint + 5;
 				log.value = log.value + pet.name + " +5 GPoint\n"
+				log.value = log.value + "Strenght +2\n";
 			}
 		}
 		ScrollBottom();
@@ -699,7 +715,10 @@ function Start() {
 		document.getElementById('gymButton').style.display = 'none';
 		document.getElementById('clickButton').style.display = 'block';
 		pet.hungry = pet.hungry - 10;
-		log.value = log.value + 'Hungry decreased by 10\n\n';
+		pet.money = pet.money - 100;
+		log.value = log.value + 'Hungry -10\n';
+		log.value = log.value + 'Money -100\n\n'
+
 		print()
 	} else {log.value = log.value + "You can't train without eating\n\n "; return false;}
 }
@@ -768,9 +787,7 @@ function save() {
 	localStorage.setItem('exp', pet.exp);
 	localStorage.setItem('money', pet.money);
 	localStorage.setItem('inventory', pet.inventory);
-	localStorage.setItem('timeClose', TimeStamp());
 	localStorage.setItem('log', document.getElementById('log').value);
-	localStorage.setItem('closeTime', timeStamp)
 
 	/*day-limits variables*/
 	localStorage.setItem('currentDay', currentDay);
@@ -779,15 +796,15 @@ function save() {
 	localStorage.setItem('trainingCounter', trainingCounter);
 	localStorage.setItem('checkTrainingToday', checkTrainingToday);
 
+	timeClose = Date.now();
     /*day change check variables*/
-   	localStorage.setItem('timeStart', timeStart);
 	localStorage.setItem('timeClose', timeClose);
 	localStorage.setItem('delay', delay);
 
 	/*pet desease status variable*/
 	localStorage.setItem('desease', desease);
 
-	saveItem();
+	saveItem();	
 }
 
 function saveItem() {
@@ -828,6 +845,7 @@ function load(){
 		pet.money = parseInt(localStorage.getItem('money'));
 		loadItem();
 		log.value = localStorage.getItem('log');
+		printDate();
 
 		/*day-limits variables*/
 		currentDay = localStorage.getItem('currentDay');
@@ -836,10 +854,14 @@ function load(){
 		trainingCounter = localStorage.getItem('trainingCounter');
 		checkTrainingToday = localStorage.getItem('checkTrainingToday');
 
+
 		/*day change check variables*/
-		timeStart = localStorage.getItem('timeStart');
-		timeClose = localStorage.getItem('timeClose');
-		delay = localStorage.getItem('delay');
+		timeStart = parseInt(Date.now());
+		timeClose = parseInt(localStorage.getItem('timeClose'));
+		delay = parseInt(timeStart - timeClose);
+		delay = parseInt(delay/1000);
+		timePassed();
+		
 
 		/*pet desease status variable*/
 		desease = parseInt(localStorage.getItem('desease'));
@@ -856,6 +878,7 @@ function load(){
 		document.getElementById('Logo2').style.animation = 'bounceIn 1.2s forwards';
 		document.getElementById('buttonStart').style.animation = 'bounceOut 0.5s forwards'
 		document.getElementById('buttonLoad').style.animation = 'bounceOut 0.5s forwards'
+
 		setTimeout(function () {
 			document.getElementById('Logo').style.display = 'none';
 			document.getElementById('buttonStart').style.display = 'none';
@@ -864,7 +887,9 @@ function load(){
 		introduction();
 
 	} else { alert('No save data');}
+	ScrollBottom();
 }
+
 
 function loadItem() {
 
@@ -910,46 +935,18 @@ function checkTraining(){
 }
 
 
-/* function for getting the current day to know when changed.*/
-function getCurrentDay(){
-	
-	if (currentDay != days[day]){
+function timePassed(){
 
-			useFunctionCheck = 1;
-			
-			feedCounter = 0;
-			trainingCounter = 0;
-			checkFeedToday = 1;
-			checkTrainingToday= 1; 
-	}
-	else { 
-		useFunctionCheck = 0;
+	log = document.getElementById('log');
+	s = (timeStart - timeClose)/1000;
+	m = parseInt(s/60);
+	h = parseInt(m/60);
+	m = parseInt(m%60);
 
-	}
-	
-	if (useFunctionCheck == 1){
-
-		currentDay = days[day];
-		useFunctionCheck = 0 ;
-	}
+	log.value = log.value + "\nTime passed since last Play:\n";
+	log.value = log.value + "h: " + h + " m: " + m +'\n';
 }
 
-/*Time-function that get the time when the application is closed.*/
-function closeTime(){
-    timeClose = Date.now();
-}
-
-/*Time-function that get the time when the application is opened.*/
-function openTime(){
-	timeStart = Date.now();
-}
-
-/*Time-function that return the minutes delay between open/closed time.*/
-function openApplicationDelay(){
-
-	delay = timeStart - timeClose;
-	delay = Math.round(delay/1000);
-}
 
 /*Time-function that prints the minutes delay between open/closed time.*/
 function printTime(){
@@ -959,15 +956,37 @@ function printTime(){
 	log.value= log.value + 'Minutes after the application is closed : '+ Math.round(delay/60) + '\n\n'; 
 }
 
+
+
 /*GameLogic-function that decrease stat during the game*/
 function decreaseStatInGame(){	
 	s=60;
+	hungry = 0;
+	happy = 0;
+	weight = 0;
+	health = 0;
 
 	interval_0 = setInterval(controlDesease, 1000);
-	interval_1 = setInterval(decreaseHungry, 1000*30*s);
+	interval_1 = setInterval(decreaseHungry, 1000*10*s);
 	interval_2 = setInterval(critState, 1000*60*s);
 	interval_3 = setInterval(mediumState, 1000*120*s);
 	interval_4 = setInterval(modarateState, 1000*240*s);
+	interval_5 = setInterval(amountMoney, 1000*10*s);
+
+	function notification(){
+
+		log = document.getElementById('log');
+
+		log.value = log.value + "Hungry -" + hungry + "\n";
+		log.value = log.value + "Happiness -" + happy + "\n";
+		log.value = log.value + "Health -" + health + "\n";
+		log.value = log.value + "Weight -" +  weight + "\n\n";
+	}
+
+	function amountMoney(){
+		pet.money = pet.money + 10;
+	}
+
 
 	function controlDesease(){
 	if (desease == 0)
@@ -978,7 +997,10 @@ function decreaseStatInGame(){
 
 	function decreaseHungry(){
 		pet.hungry -- ;
+		hungry++;
 		print();
+		notification();
+		ScrollBottom();
 	}
 
 
@@ -987,54 +1009,82 @@ function decreaseStatInGame(){
 				pet.hungry--;
 				pet.happiness --;
 				pet.health -- ;
-			}
+				hungry++;
+				happy++;
+				health++;
+		}
 
-			if (pet.hungry< 10){
-				pet.health -- ;
-				pet.happiness -- ;
-			}
+		if (pet.hungry< 10){
+			pet.health -- ;
+			pet.happiness -- ;
+			pet.weight--;
+			health++;
+			happy++;
+			weight++;
+		}
 
-			if (pet.happiness<10){
-				pet.health -- ;
-			}
+		if (pet.happiness<10){
+			pet.health -- ;
+			happy++;
+		}
+		notification();
+		ScrollBottom();
 		print();
 	}	
 
 	function mediumState(){	
 
-			if (pet.weight>=75 && pet.weight<100){
-				pet.hungry--;
-				pet.happiness --;
-				pet.health -- ;
-			}
+		if (pet.weight>=75 && pet.weight<100){
+			pet.hungry--;
+			pet.happiness --;
+			pet.health -- ;
+			hungry++;
+			happy++;
+			health++;
+		}
 
-			if (pet.hungry<= 10 && pet.hungry<25){
-				pet.health -- ;
-				pet.happiness -- ;	
-			}
+		if (pet.hungry<= 10 && pet.hungry<25){
+			pet.health -- ;
+			pet.happiness -- ;	
+			pet.weight--;
+			health++;
+			happy++;
+			weight++;
+		}
 
-			if (pet.happiness<=10 && pet.happiness<25){
-				pet.health -- ;
-			}
+		if (pet.happiness<=10 && pet.happiness<25){
+			pet.health -- ;
+			health++;
+		}
+		notification();
+		ScrollBottom();
 		print();
 	}
 
 	function modarateState(){
-			if (pet.weight>=50 && pet.weight<75){
-				pet.happiness --;
-			}
+		if (pet.weight>=50 && pet.weight<75){
+			pet.happiness --;
+			happy++;
+		}
 
-			if (pet.hungry<= 25 && pet.hungry<50){
-				pet.health --;
-			}
+		if (pet.hungry<= 25 && pet.hungry<50){
+			pet.health --;
+			pet.weight--;
+			health++;
+			weight++;
+		}
 
-			if (pet.happiness<=25 && pet.happiness<50){
-				pet.health -- ;
-			}
+		if (pet.happiness<=25 && pet.happiness<50){
+			pet.health -- ;
+			health++;
+		}
 
-			if (pet.happiness>75){
-				pet.health ++ ;
-			}
+		if (pet.happiness>75){
+			pet.health ++ ;
+			health--;
+		}
+		notification();
+		ScrollBottom();
 		print();
 	}
 }
@@ -1044,33 +1094,52 @@ function decreaseStatOutGame(){
 	s = 60;
 	if (desease == 0)
 	s = 45;
+	happy = 0;
+	health = 0;
+	hungry = 0;
+	money = 0;
+
+
+	log = document.getElementById('log');
 
 	for (i=1; i<=delay/60; i++){
 
+		if(i%(10*s/60) == 0){
+			pet.money = pet.money + 10;
+			money = money + 10;
+		}	
 
-		if (i%(30*s/60) == 0){
-			pet.hungry -- ;		
+
+		if (i%(10*s/60) == 0){
+			pet.hungry -- ;	
+			this.hungry++;	
 		}
 
 		if (i%(60*s/60) == 0){
 
 
-		if (pet.weight> 100){
-			pet.hungry--;
-			pet.happiness --;
-			pet.health -- ;
-		}
+			if (pet.weight> 100){
+				pet.hungry--;
+				pet.happiness --;
+				pet.health -- ;
+				this.hungry++;
+				this.happy++;
+				this.health++;
+			}
 
-		if (pet.hungry< 10){
-			pet.health -- ;
-			pet.happiness -- ;
-		}
+			if (pet.hungry< 10){
+				pet.health -- ;
+				pet.happiness -- ;
+				this.happy++;
+				this.health++;
+			}
 
-		if (pet.happiness<10){
-			pet.health -- ;
-		}
+			if (pet.happiness<10){
+				pet.health -- ;
+				this.health++;
+			}
 
-	}
+		}
 
 
 		if (i%(120*s/60) == 0){
@@ -1079,15 +1148,21 @@ function decreaseStatOutGame(){
 				pet.hungry--;
 				pet.happiness --;
 				pet.health -- ;
+				this.hungry++;
+				this.happy++;
+				this.health++;
 			}
 
 			if (pet.hungry<= 10 && pet.hungry<25){
 				pet.health -- ;
-				pet.happiness -- ;	
+				pet.happiness -- ;
+				this.happy++;
+				this.health++;
 			}
 
 			if (pet.happiness<=10 && pet.happiness<25){
 				pet.health -- ;
+				this.health++;
 			}
 
 		}
@@ -1097,23 +1172,33 @@ function decreaseStatOutGame(){
 
 			if (pet.weight>=50 && pet.weight<75){
 				pet.happiness --;
+				this.happy++;
 			}
 
 			if (pet.hungry<= 25 && pet.hungry<50){
 				pet.health --;
-
+				this.health++;
 			}
 
 			if (pet.happiness<=25 && pet.happiness<50){
 				pet.health -- ;
+				this.health++;
 			}
 
 			if (pet.happiness>75){
 				pet.health ++ ;
+				this.health--;
 			}
 
 		}	print();
 	}
+
+	log.value = log.value + '\nHungry -' + hungry + '\n';
+	log.value = log.value + 'Happiness -' + happy + '\n';
+	log.value = log.value + 'Health -' + health + '\n';
+	log.value = log.value + "Money +" + money + '$\n\n';
+	ScrollBottom();
+
 }
 
 /*GameLogic-function that check if the pet get sick in game.*/
@@ -1175,8 +1260,19 @@ function checkDeseaseOutGame(){
 			}
 		}
 	}
-	if (desease == 0)
+
+	if (desease == 0) {
+
 		log.value = log.value + 'Oh no! Pet get sick.\n\n' ;
+		message = document.getElementById('message');
+		balloon = document.getElementsByClassName('speech-bubble');
+
+		message.innerHTML = "I don't feel good...";
+		balloon[0].style.animation = 'appear 2s forwards';
+		setTimeout(function () {balloon[0].style.animation = 'disappear 2s forwards';}, 4000)
+	}
+
+
 }
 
 /*GameLogic-function that check if the pet get sick in game.*/
