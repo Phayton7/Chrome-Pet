@@ -28,7 +28,7 @@ var interval_4;
 
 var pet = ({
 
-	name : 'pet',
+	name : '',
 	std : 1,
 	grownPoint: 0,
 	health : 100,
@@ -80,16 +80,33 @@ var select = "";
 var select2 = "";
 
 function NewGame() {
+
+	
+    
 	document.getElementById('buttonStart').style.animation = 'bounceOut 0.5s forwards';
 	document.getElementById('buttonLoad').style.animation = 'bounceOut 0.5s forwards';
 
 	setTimeout(function () {
 		document.getElementById('buttonConfirm').style.display = 'block';
 		document.getElementById('inputName').style.display = 'block';
+		document.getElementById('buttonReturn').style.display = 'block';
 		document.getElementById('buttonConfirm').style.animation = 'bounceIn 0.5s forwards';
 		document.getElementById('inputName').style.animation = 'bounceIn 0.5s forwards';
+		document.getElementById('buttonReturn').style.animation = 'bounceIn 0.5s forwards';
 	}, 1000)
 } 
+
+function back() {
+
+	document.getElementById('buttonConfirm').style.animation = 'bounceOut 0.5s forwards';
+	document.getElementById('inputName').style.animation = 'bounceOut 0.5s forwards';
+	document.getElementById('buttonReturn').style.animation = 'bounceOut 0.5s forwards';
+
+	setTimeout(function () {
+		document.getElementById('buttonStart').style.animation = 'bounceIn 0.5s forwards';
+		document.getElementById('buttonLoad').style.animation = 'bounceIn 0.5s forwards';
+	}, 1000)
+}
 
 function confirmName() {
 
@@ -108,35 +125,36 @@ function confirmName() {
 			document.getElementById('inputName').style.display = 'none';
 		}, 1000)
 		introduction();
+		welcome("date");
+		print();
+		openTime();
+		openApplicationDelay();
+		decreaseStatInGame(); 
+		checkDeseaseInGame();
 	}
 	else
 	{
 		alert('No name inserted');	
 	}
-	welcome("date");
-	print();
-	openTime();
-	openApplicationDelay();
-	decreaseStatInGame(); 
-	decreaseStatOutGame();
-	checkDeseaseInGame();
-	checkDeseaseOutGame();
 
 }
 
 function LoadGame() {
 
-	welcome("date");
-	load();
-	print();
-	decreaseStatInGame(); 
-	checkDeseaseInGame();	
-	increaseMoneyInGame();
-	checkDeseaseInGame();
-	decreaseStatOutGame();
-	checkDeseaseOutGame();
-	increaseMoneyOutGame();
-	evolutionControl();
+	if(localStorage.getItem('name') != "") {
+
+		welcome("date");
+		load();
+		print();
+		decreaseStatInGame(); 
+		decreaseStatOutGame();
+		checkDeseaseInGame();
+		checkDeseaseOutGame();
+		increaseMoneyInGame();
+		increaseMoneyOutGame();
+		evolutionControl();
+
+	} else { alert("There's no save data"); }
 }
 
 function welcome(data) {
@@ -144,7 +162,8 @@ function welcome(data) {
     window.onload = date_time('date');
     window.onbeforeunload = function(event)
     {
-        return 'I dati di gioco verranno salvati AUTOMATICAMENTE'
+    	save();
+        return 'This game have an Autosave function! Close the Game ?'
     };
 }
 
@@ -496,11 +515,15 @@ function printDate() {
         toString = days[day] + ' ' + months[month] + ' ' + d + ' ' + '\n';
 
         log = document.getElementById('log');
+
         log.value = log.value + toString;
+        log.value = log.value + toString + '\n' + 'Welcome Back!'
+
         if (day == 2 || day == 5)
         	 log.value = log.value + "Today the Gym grant you a 30% discount! \n\n";
         if (day == 3 || day == 6)
         	 log.value = log.value + "Today the Food Shop grant you a 30% discount! \n\n";
+
 }
 
 /* Time checker for background change */
@@ -533,7 +556,7 @@ function checkTime(hour) {
         money.style.background = 'white';
         log.style.border = '2px solid #9adacc';
         log.style.background = '#9adacc';
-        log.style.color = '#379336';
+        log.style.color = '#0074D9';
         log2.style.color = '#2ECC40';
         quest.style.border = '2px solid #9adacc';
         quest.style.backgroundColor = 'white';
@@ -662,33 +685,36 @@ function TimeCount() {
 		}
 		else
 		{
-			pet.weight = pet.weight - c/2;
-			pet.money = pet.money + (c*3);
-			log.value = log.value + "Earn " + c*3 + "$!\n\n"
-			if(pet.weight<0) {
-				pet.weight = 0.1;
-				log.value = log.value + "Weight can't be decreased more...\n\n"
-			} else {log.value = log.value + "Weight decreased by " + c/2 + '\n'; }
-			if(c<10) {
-				growUp(15);
-				pet.agility = pet.agility + 2;
-				log.value = log.value + pet.name + " +15 GPoint\n"
-				log.value = log.value + "Agility +2\n";
-			}
-			if(c>=10 && c<15) {
-				growUp(10);
-				pet.agility++;
-				pet.strenght++;
-				log.value = log.value + pet.name + " +10 GPoint\n"
-				log.value = log.value + "Strenght +1\n";
-				log.value = log.value + "Agility +1\n";
-			}
-			if(c>=15) {
-				growUp(5);
-				pet.strenght = pet.strenght + 2;
-				pet.grownPoint = pet.grownPoint + 5;
-				log.value = log.value + pet.name + " +5 GPoint\n"
-				log.value = log.value + "Strenght +2\n";
+			if(nClick == score) {
+
+				pet.weight = pet.weight - c/2;
+				pet.money = pet.money + (c*3);
+				log.value = log.value + "Earn " + c*3 + "$!\n\n"
+				if(pet.weight<0) {
+					pet.weight = 0.1;
+					log.value = log.value + "Weight can't be decreased more...\n\n"
+				} else {log.value = log.value + "Weight decreased by " + c/2 + '\n'; }
+				if(c<10) {
+					growUp(15);
+					pet.agility = pet.agility + 2;
+					log.value = log.value + pet.name + " +15 GPoint\n"
+					log.value = log.value + "Agility +2\n";
+				}
+				if(c>=10 && c<15) {
+					growUp(10);
+					pet.agility++;
+					pet.strenght++;
+					log.value = log.value + pet.name + " +10 GPoint\n"
+					log.value = log.value + "Strenght +1\n";
+					log.value = log.value + "Agility +1\n";
+				}
+				if(c>=15) {
+					growUp(5);
+					pet.strenght = pet.strenght + 2;
+					pet.grownPoint = pet.grownPoint + 5;
+					log.value = log.value + pet.name + " +5 GPoint\n"
+					log.value = log.value + "Strenght +2\n";
+				}
 			}
 		}
 		ScrollBottom();
@@ -710,12 +736,12 @@ function reset() {
 
 function Start() {
 
-	start = 1;
+	start = 0;
 	c=0;
 	score=0;
 	log = document.getElementById('log');
 
-	if(pet.hungry > 40 && pet.money > 100)
+	if(pet.hungry > 40 && pet.money >= 100)
 	{
 		cost = 100;
 		document.getElementById('gymButton').style.display = 'none';
@@ -732,8 +758,10 @@ function Start() {
 		log.value = log.value + 'Money -' + cost + '\n\n'
 
 		print()
-	} else if (pet.hungry>40) {log.value = log.value + "You can't train without eating.\n\n "; return false;}
-	  else if (pet.money >40) {log.value = log.value + "You can't afford this training.\n\n "; return false;}
+
+	} else if (pet.hungry < 40) {log.value = log.value + "You can't train without eating.\n\n "; return false;}
+	  else if (pet.money < 100) {log.value = log.value + "You can't afford this training.\n\n "; return false;}
+
 }
 
 function RapidClick() {
@@ -926,6 +954,11 @@ function loadItem() {
 	}
 }
 
+function DeleteSaveData() {
+
+	localStorage.clear();
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -965,7 +998,6 @@ function decreaseStatInGame(){
 	interval_2 = setInterval(critState, 1000*60*s);
 	interval_3 = setInterval(mediumState, 1000*120*s);
 	interval_4 = setInterval(modarateState, 1000*240*s);
-	interval_5 = setInterval(amountMoney, 1000*10*s);
 
 	function notification(){
 
@@ -977,9 +1009,6 @@ function decreaseStatInGame(){
 		log.value = log.value + "Weight -" +  weight + "\n\n";
 	}
 
-	function amountMoney(){
-		pet.money = pet.money + 10;
-	}
 
 
 	function controlDesease(){
@@ -1091,18 +1120,11 @@ function decreaseStatOutGame(){
 	happy = 0;
 	health = 0;
 	hungry = 0;
-	money = 0;
 
 
 	log = document.getElementById('log');
 
 	for (i=1; i<=delay/60; i++){
-
-		if(i%(10*s/60) == 0){
-			pet.money = pet.money + 10;
-			money = money + 10;
-		}	
-
 
 		if (i%(10*s/60) == 0){
 			pet.hungry -- ;	
@@ -1190,7 +1212,6 @@ function decreaseStatOutGame(){
 	log.value = log.value + '\nHungry -' + hungry + '\n';
 	log.value = log.value + 'Happiness -' + happy + '\n';
 	log.value = log.value + 'Health -' + health + '\n';
-	log.value = log.value + "Money +" + money + '$\n\n';
 	ScrollBottom();
 }
 
@@ -1279,11 +1300,17 @@ function increaseMoneyInGame(){
 /*GameLogic-function that check if the pet get sick in game.*/
 function increaseMoneyOutGame(){
 	s = 60;
+	money = 0;
+	log = document.getElementById('log');
+
 	for (i=1; i<=delay/60; i++){
 
-		if (i%(3*s/60) == 0)
-			pet.money ++ ;		
+		if (i%(3*s/60) == 0) {
+			pet.money ++ ;	
+			money++;	
+		}
 	}
+	log.value = log.value + 'Money +' + money + '\n\n';
 }
 
 /*GameLogic-function that heal the pet when it get sick.*/

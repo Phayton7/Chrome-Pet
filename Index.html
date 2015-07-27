@@ -14,16 +14,17 @@
 		<script src="js/js.js"></script>
 
 	</head>
-	<body onUnload='save(), closeTime();' >
+	<body onUnload='closeTime();' >
 		
 		<div id='Logo1' ></div>
 		<div id='Logo2' ></div>
+		<button class='button' id='buttonStart' onClick='NewGame();'>NEW GAME</button>
+		<button class='button' id='buttonLoad' onClick='LoadGame()' >LOAD GAME</button>
+		<input type='text' id='inputName' maxlenght='14' placeholder='Welcome! Choose Pet Name' >
+		<button class='button' id='buttonConfirm' onClick='confirmName()' >CONFIRM</button>
+		<button class='button' id='buttonReturn' onClick='back()'>BACK</button>
+
 		<center>
-			<button class='button' id='buttonStart' onClick='NewGame();'>NEW GAME</button>
-			<button class='button' id='buttonLoad' onClick='LoadGame()' >LOAD GAME</button>
-			<input type='text' id='inputName' maxlenght='14' placeholder='Welcome! Choose Pet Name' >
-			<button class='button' id='buttonConfirm' onClick='confirmName()'>CONFIRM</button>
-		</center>
 		<div id='window'>
 			
 			<div id='quest'></div>	
@@ -104,6 +105,7 @@
 			</div>
 
 		</div>
+		</center>
 		<div id='canvas'><center><p id='welcome'>WELCOME</p></center></div>
 		
 		<img id='Logo' src='css/logo/LOGO.png'>
