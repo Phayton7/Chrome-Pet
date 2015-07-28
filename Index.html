@@ -8,15 +8,17 @@
 		<link rel="stylesheet" type="text/css" href="css/index.css" />
 		<link rel="stylesheet" type="text/css" href="css/index2.css" />
 		<link rel="stylesheet" type="text/css" href="css/index3.css" />
+		<link rel="stylesheet" href="css/joyride-2.1.css">
 		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
 		<script type="text/javascript" src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+		<script type="text/javascript" src="js/jquery.joyride-2.1.js"></script>
 		<script src="js/js.js"></script>
-
-
 
 	</head>
 	<body onUnload='closeTime();' >
-	
+		<img id='Logo' src='css/logo/LOGO.png'>
+		
+
 		<div id='Logo1' ></div>
 		<div id='Logo2' ></div>
 		<button class='button' id='buttonStart' onClick='NewGame();'>NEW GAME</button>
@@ -24,16 +26,15 @@
 		<input type='text' id='inputName' maxlenght='14' placeholder='Welcome! Choose Pet Name' >
 		<button class='button' id='buttonConfirm' onClick='confirmName()' >CONFIRM</button>
 		<button class='button' id='buttonReturn' onClick='back()'>BACK</button>
-
 		<center>
 		<div id='window'>
 			
 			<div id='quest'></div>	
+			<div id='buttonShop' onClick='HideShow("shopWindow")'></div>
 			<div id='buttonFeed' onClick='HideShow("Inventory")'></div>
 			<div id='buttonHeal' onClick='heal()'></div>
 			<div id='buttonGym' onclick='print(),HideShow("Gym"), reset()'></div>
 			<div id='buttonWC' onClick='clean()'></div>
-			<div id='buttonShop' onClick='HideShow("shopWindow")'></div>
 			<span id="date"></span>
 			<textarea id='log' disabled></textarea>
 			<text id='logtxt'>LOG</text>
@@ -107,9 +108,56 @@
 
 		</div>
 		</center>
-		<div id='canvas'><center><p id='welcome'>WELCOME</p></center></div>
 		
-		<img id='Logo' src='css/logo/LOGO.png'>
+		<div id='canvas'><center><p id='welcome'>WELCOME</p></center></div>
+
+		<ol id="joyRideTipContent">
+
+	      <li data-id="statistics" data-button="NEXT" data-options="tipLocation:left">
+	        <h2>STATS</h2>
+	        <p>Here you can view the STATS of your PET</p>
+	      </li>
+	      <li data-id="log" data-button="NEXT" data-options="tipLocation:left">
+	        <h2>LOG-EVENT</h2>
+	        <p>The log where you can review what you've done</p>
+	      </li>
+	      
+	      <li data-id="buttonShop" data-text="NEXT" data-options="tipLocation:top">
+	        <h2>SHOP</h2>
+	        <p>Open the SHOP and buy the food you need for feed your pet</p>
+	      </li>
+
+	      <li data-id="buttonFeed" data-text="NEXT" data-options="tipLocation:top">
+	        <h2>FEED</h2>
+	        <p>The inventory where you can find the food bought in the SHOP, feed your PET with them</p>
+	      </li>
+
+	      <li data-id="buttonHeal" data-text="NEXT" data-options="tipLocation:top">
+	        <h2>HEAL</h2>
+	        <p>Heal you pet when he will be sick, but pay attention it's expensive</p>
+	      </li>
+
+	      <li data-id="buttonGym" data-text="NEXT" data-options="tipLocation:top">
+	      	<h2>GYM</h2>
+	      	<p>Train your pet and raise his STATS like Strenght and Agility</p>
+	      </li>
+
+	      <li data-id="buttonWC" data-text="NEXT" data-options="tipLocation:top">
+	        <h2>WC</h2>
+	        <p>Clean the place for a Healthy Life</p>
+	      </li>
+
+	      <li data-id="pet" data-text="NEXT" data-options="tipLocation:top">
+	        <h2>PET</h2>
+	        <p>And here's you PET!</p>
+	      </li>
+
+	      <li data-button="CLOSE">
+	        <h2>Enjoy!</h2>
+	        <p>Now grow your pet and have fun!</p>
+	      </li>
+	    </ol>
+	  
 	</body>
 	
 </html>

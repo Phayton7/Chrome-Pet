@@ -130,6 +130,8 @@ function confirmName() {
 		increaseMoneyInGame();
 		decreaseStatInGame(); 
 		checkDiseaseInGame();
+		document.getElementById('log').value = document.getElementById('log').value + 'WELCOME!\n\n'
+		setTimeout(function (){ tutorial(); }, 4500);
 	}
 	else
 	{
@@ -228,7 +230,7 @@ function selectBuy(foodToBuy) {
 			log.value = log.value + 'Hungry: ' + shop[index2L].lessHungry +'\n';
 			log.value = log.value + 'Calories: +' + shop[index2L].plusWeight +'g\n';
 			log.value = log.value + 'Happiness: ' + shop[index2L].plusHappiness +'\n';
-			log.value = log.value + 'Price: ' + shop[index2L].price +'\n';
+			log.value = log.value + 'Price: ' + shop[index2L].price +'\n\n';
 		}
 	}
 	for(i=0;i<10;i++) {
@@ -397,9 +399,9 @@ function feed() {
 
 		// Stampa tutto nel LOG
 		log.value = log.value + 'Feeded with ' + item[IndexDelete].name + '\n';
-		log.value = log.value + pet.name + ' Hungry incrased/decreased to ' + pet.hungry + '\n';
-		log.value = log.value + pet.name + ' Weight incrased/decreased to ' + pet.weight + '\n';
-		log.value = log.value + pet.name + ' Happiness incrased/decreased to ' + pet.happiness + '\n\n';
+		log.value = log.value + ' Hungry -> ' + pet.hungry + '\n';
+		log.value = log.value + ' Weight ->  ' + pet.weight + '\n';
+		log.value = log.value + ' Happiness -> ' + pet.happiness + '\n';
 
 		if(item[IndexDelete].name == "fish" || item[IndexDelete].name == "sushi") {
 			growUp(20);
@@ -509,12 +511,11 @@ function printDate() {
         d = date.getDate();
         day = date.getDay();
         days = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
-        toString = days[day] + ' ' + months[month] + ' ' + d + ' ' + '\n';
+        toString = days[day] + ' ' + months[month] + ' ' + d;
 
         log = document.getElementById('log');
-
-        log.value = log.value + toString;
-        log.value = log.value + toString + '\n' + 'Welcome Back!'
+        log.value = log.value + '//////////////////';
+        log.value = log.value + '<' + toString + '>\n' + 'Welcome Back!\n'
 
         if (day == 2 || day == 5)
         	 log.value = log.value + "Today the Gym grant you a 30% discount! \n\n";
@@ -991,6 +992,21 @@ function printTime(){
 	log.value= log.value + 'Minutes after the application is closed : '+ Math.round(delay/60) + '\n\n'; 
 }
 
+<<<<<<< HEAD
+=======
+function checkState() {
+	if(pet.hungry<0)
+		pet.hungry = 0;
+	if(pet.health<0)
+		pet.health = 0;
+	if(pet.weight<0)
+		pet.weight = 0;
+	if(pet.happiness<0)
+		pet.happiness = 0;
+}
+
+
+>>>>>>> Fixed minor bug, added tutorial functions
 /*GameLogic-function that decrease stat during the game*/
 function decreaseStatInGame(){	
 	s=60;
@@ -1027,6 +1043,7 @@ function decreaseStatInGame(){
 	function decreaseHungry(){
 		pet.hungry -- ;
 		hungry++;
+		checkState();
 		print();
 		notification();
 		ScrollBottom();
@@ -1058,6 +1075,7 @@ function decreaseStatInGame(){
 		}
 		notification();
 		ScrollBottom();
+		checkState();
 		print();
 	}	
 
@@ -1087,6 +1105,7 @@ function decreaseStatInGame(){
 		}
 		notification();
 		ScrollBottom();
+		checkState();
 		print();
 	}
 
@@ -1114,6 +1133,7 @@ function decreaseStatInGame(){
 		}
 		notification();
 		ScrollBottom();
+		checkState();
 		print();
 	}
 }
@@ -1212,7 +1232,9 @@ function decreaseStatOutGame(){
 				this.health--;
 			}
 
-		}	print();
+		}
+		checkState();	
+		print();
 	}
 
 	log.value = log.value + '\nHungry -' + hungry + '\n';
@@ -1346,3 +1368,16 @@ function heal(){
 	else if (pet.money < cost) { log.value = log.value + "You can't afford this heal.\n\n" ; }
 }
 
+
+function tutorial() {
+	$('#joyRideTipContent').joyride({
+		  autoStart : true,
+		  postStepCallback : function (index, tip) {
+			  if (index == -2) {
+			    $(this).joyride('set_li', false, 1);
+			  }
+		  },
+		  modal:true,
+		  expose: true
+	});
+}
