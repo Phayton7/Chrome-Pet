@@ -127,10 +127,9 @@ function confirmName() {
 		introduction();
 		welcome("date");
 		print();
-		openTime();
-		openApplicationDelay();
+		increaseMoneyInGame();
 		decreaseStatInGame(); 
-		checkDeseaseInGame();
+		checkDiseaseInGame();
 	}
 	else
 	{
@@ -740,7 +739,7 @@ function Start() {
 	score=0;
 	log = document.getElementById('log');
 
-	if(pet.hungry > 40 && pet.money >= 100)
+	if(pet.hungry >= 40 && pet.money >= 100)
 	{
 		cost = 100;
 		document.getElementById('gymButton').style.display = 'none';
@@ -757,6 +756,7 @@ function Start() {
 		log.value = log.value + 'Money -' + cost + '\n\n'
 
 		print()
+		start = 1;
 
 	} else if (pet.hungry < 40) {log.value = log.value + "You can't train without eating.\n\n "; return false;}
 	  else if (pet.money < 100) {log.value = log.value + "You can't afford this training.\n\n "; return false;}
@@ -1011,7 +1011,7 @@ function decreaseStatInGame(){
 
 
 	function controlDesease(){
-	if (desease == 0)
+	if (disease == 0)
 		s = 45;
 	else { s = 60; }
 	}
@@ -1324,17 +1324,17 @@ function increaseMoneyOutGame(){
 function heal(){
 	point = pet.health;
 	cost = 250+50-point;
-	if (desease == 0 && pet.money >= cost){
-		desease = 1;
+	if (disease == 0 && pet.money >= cost){
+		disease = 1;
 
 	
 		pet.health = 50;
 		pet.money = pet.money - cost;
 		log.value = log.value + 'Pet is healed.\nYou payed ' + cost + '$. \n\n';
-		checkDeseaseInGame();
+		checkDiseaseInGame();
 		print();
 	}
-	else if (desease == 1) { log.value = log.value + "Pet don't need to get healed.\n\n" ; }
+	else if (disease == 1) { log.value = log.value + "Pet don't need to get healed.\n\n" ; }
 	else if (pet.money < cost) { log.value = log.value + "You can't afford this heal.\n\n" ; }
 }
 
