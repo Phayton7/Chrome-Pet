@@ -12,6 +12,8 @@ var nTraining=0;
 var myVar;
 
 var currentDay;
+var DigCount = 0;
+var nFoodsEaten = 0 ;
 
 /* Variables for the time when the application is close.*/
 var timeStart; 
@@ -33,7 +35,7 @@ var pet = ({
 	grownPoint: 0,
 	health : 100,
     hungry : 50,
-	toilet : 0,
+	toilet : 1,
 	strenght : 1,
 	agility : 1,
 	weight : 5,
@@ -44,37 +46,38 @@ var pet = ({
 })
 
 /* Object food */
-function food(sName, sLessHungry, sPlusWeight, sHappiness, sPrice){
+function food(sName, sLessHungry, sPlusWeight, sHappiness, sPrice, sDigeribility){
 
 	this.name = sName,
 	this.lessHungry = sLessHungry,
 	this.plusWeight = sPlusWeight,
 	this.plusHappiness = sHappiness,
-	this.price = sPrice
+	this.price = sPrice,
+	this.digeribility = sDigeribility;
 }
 
 /* Array shop */
-shop[0] = new food("bread", "5", "5","0", "30");
-shop[1] = new food("fruits", "6", "1","-5", "35");
-shop[2] = new food("salad","7","1","-6", "40");
-shop[3] = new food("chocolate", "6", "8","10","45");
-shop[4] = new food("chips", "10", "11", "8", "55");
-shop[5] = new food("spaghetti", "25", "20","0","85");
-shop[6] = new food("fish", "23", "10","-8", "90");
-shop[7] = new food("sushi", "21", "6","-9","90");
-shop[8] = new food("chicken", "26", "23","5","125");
-shop[9] = new food("hamburger", "30", "28","12", "135");
+shop[0] = new food("bread",      "5",  "5",  "0",  "30",  "2");
+shop[1] = new food("fruits",     "6",  "1",  "-5", "35",  "1");
+shop[2] = new food("salad",      "7",  "1",  "-6", "40",  "1");
+shop[3] = new food("chocolate",  "6",  "8",  "10", "45",  "2");
+shop[4] = new food("chips",      "10", "11", "8",  "55",  "3");
+shop[5] = new food("spaghetti",  "25", "20", "0",  "85",  "4");
+shop[6] = new food("fish",       "23", "10", "-8", "90",  "3");
+shop[7] = new food("sushi",      "21", "6",  "-9", "90",  "3");
+shop[8] = new food("chicken",    "26", "23", "5",  "125", "4");
+shop[9] = new food("hamburger",  "30", "28", "12", "135", "5");
 
-item[0] = new food("", "", "", "", "");
-item[1] = new food("", "", "", "", "");
-item[2] = new food("", "", "", "", "");
-item[3] = new food("", "", "", "", "");
-item[4] = new food("", "", "", "", "");
-item[5] = new food("", "", "", "", "");
-item[6] = new food("", "", "", "", "");
-item[7] = new food("", "", "", "", "");
-item[8] = new food("", "", "", "", "");
-item[9] = new food("", "", "", "", "");
+item[0] = new food("", "", "", "", "", "");
+item[1] = new food("", "", "", "", "", "");
+item[2] = new food("", "", "", "", "", "");
+item[3] = new food("", "", "", "", "", "");
+item[4] = new food("", "", "", "", "", "");
+item[5] = new food("", "", "", "", "", "");
+item[6] = new food("", "", "", "", "", "");
+item[7] = new food("", "", "", "", "", "");
+item[8] = new food("", "", "", "", "", "");
+item[9] = new food("", "", "", "", "", "");
 
 var select = "";
 var select2 = "";
@@ -230,7 +233,9 @@ function selectBuy(foodToBuy) {
 			log.value = log.value + 'Hungry: ' + shop[index2L].lessHungry +'\n';
 			log.value = log.value + 'Calories: +' + shop[index2L].plusWeight +'g\n';
 			log.value = log.value + 'Happiness: ' + shop[index2L].plusHappiness +'\n';
-			log.value = log.value + 'Price: ' + shop[index2L].price +'\n\n';
+			log.value = log.value + 'Price: ' + shop[index2L].price +'\n';
+			log.value = log.value + 'Digeribility: ' + shop[index2L].digeribility +'\n\n';
+
 		}
 	}
 	for(i=0;i<10;i++) {
@@ -296,8 +301,6 @@ function buy() {
 			}
 		}
 
-		
-
 		// Insert object (Graphic) //
 		slotToFill = document.getElementById(emptySlotG);
 		slotToFill.style.backgroundImage = imgFood;
@@ -310,6 +313,8 @@ function buy() {
 		item[emptySlotL].plusWeight = shop[IndexFood].plusWeight;
 		item[emptySlotL].plusHappiness = shop[IndexFood].plusHappiness;
 		item[emptySlotL].price = shop[IndexFood].price;
+		item[emptySlotL].digeribility = shop[IndexFood].digeribility;
+
 		if (currentDay == 'Wednesday' || currentDay == 'Saturday')	
 			shop[IndexFood].price = Math.round(shop[IndexFood].price/100*70);
 
@@ -372,9 +377,28 @@ function feed() {
 		toFeed = document.getElementById(select2);
 		IndexDelete = toFeed.getAttribute('value');
 
+
 		// Calcolo aggiutivo della FAME
 		pet.hungry = parseInt(pet.hungry) + parseInt(item[IndexDelete].lessHungry);
+		checkWc();
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		function checkWc(){ 
 
+			if (pet.toilet == 1){
+
+					log.value = log.value + ' Prova  '+ item[IndexDelete].digeribility+'\n' ;
+				DigCount = DigCount + item[IndexDelete].digeribility -nFoodsEaten; 
+				nFoodsEaten ++;
+				setTimeout(doPoop, DigCount*1000*3);
+			}
+			function doPoop(){
+				pet.toilet = 0 ;
+				log.value = log.value + ' ha fatto la cacca' ;
+			}
+
+ 
+		}
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 		if(pet.hungry >= 100) {
 			pet.hungry = 100;
 			log.value = log.value + pet.name + ": I'm FULL!\n";
@@ -384,7 +408,7 @@ function feed() {
 			
 			print();
 		}
-
+		checkHappiness = pet.happiness;
 		// Calcolo aggiuntivo al PESO e alla FELICITA'
 		pet.weight = parseInt(pet.weight) + parseInt(item[IndexDelete].plusWeight);
 		pet.happiness = parseInt(pet.happiness) + parseInt(item[IndexDelete].plusHappiness);
@@ -399,9 +423,12 @@ function feed() {
 
 		// Stampa tutto nel LOG
 		log.value = log.value + 'Feeded with ' + item[IndexDelete].name + '\n';
-		log.value = log.value + ' Hungry -> ' + pet.hungry + '\n';
-		log.value = log.value + ' Weight ->  ' + pet.weight + '\n';
-		log.value = log.value + ' Happiness -> ' + pet.happiness + '\n';
+		log.value = log.value + pet.name + ' Hungry increased to ' + pet.hungry + '\n';
+		log.value = log.value + pet.name + ' Weight increased to ' + pet.weight + '\n';
+		if(checkHappiness < pet.happiness)
+			log.value = log.value + pet.name + ' Happiness increased to ' + pet.happiness + '\n\n';
+		if(checkHappiness > pet.happiness)
+			log.value = log.value + pet.name + ' Happiness decreased to ' + pet.happiness + '\n\n';
 
 		if(item[IndexDelete].name == "fish" || item[IndexDelete].name == "sushi") {
 			growUp(20);
@@ -449,7 +476,6 @@ function ScrollBottom() {
 	log = document.getElementById('log');
    	log.scrollTop = log.scrollHeight;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -802,7 +828,7 @@ function poop() {
 		pet.toilet = 1;
 		document.getElementById('poop').style.display = 'block';
 		document.getElementById('poop').style.animation = 'bounceIn 0.5s forwards';
-		log.value = log.value + pet.name + ' did the poo\n\n';
+		log.value = log.value + pet.name + ' did the poop\n\n';
 	}
 
 	setTimeout('poop()', 5000);
@@ -875,7 +901,6 @@ function saveItem() {
 		alert('name:' + localStorage.getItem('slotName'+i) + '  value: ' + localStorage.getItem('slotValue'+i));
 	}
 }
-
 
 function load(){
 
@@ -992,8 +1017,7 @@ function printTime(){
 	log.value= log.value + 'Minutes after the application is closed : '+ Math.round(delay/60) + '\n\n'; 
 }
 
-<<<<<<< HEAD
-=======
+
 function checkState() {
 	if(pet.hungry<0)
 		pet.hungry = 0;
@@ -1005,8 +1029,6 @@ function checkState() {
 		pet.happiness = 0;
 }
 
-
->>>>>>> Fixed minor bug, added tutorial functions
 /*GameLogic-function that decrease stat during the game*/
 function decreaseStatInGame(){	
 	s=60;
@@ -1381,3 +1403,5 @@ function tutorial() {
 		  expose: true
 	});
 }
+
+
