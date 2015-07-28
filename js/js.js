@@ -14,6 +14,7 @@ var myVar;
 var currentDay;
 var DigCount = 0;
 var nFoodsEaten = 0 ;
+var TimeToDig = 0 ;
 
 /* Variables for the time when the application is close.*/
 var timeStart; 
@@ -155,6 +156,7 @@ function LoadGame() {
 		checkDiseaseOutGame();
 		increaseMoneyInGame();
 		increaseMoneyOutGame();
+		doPoopOutGame();
 		evolutionControl();
 
 	} else { alert("There's no save data"); }
@@ -372,43 +374,47 @@ function feed() {
 	print();
 	if(pet.hungry < 100 && select2 != "") {
 
-		
 		log = document.getElementById('log');
 		toFeed = document.getElementById(select2);
 		IndexDelete = toFeed.getAttribute('value');
-
+	
 
 		// Calcolo aggiutivo della FAME
 		pet.hungry = parseInt(pet.hungry) + parseInt(item[IndexDelete].lessHungry);
 		checkWc();
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		function checkWc(){ 
 
 			if (pet.toilet == 1){
-
-					log.value = log.value + ' Prova  '+ item[IndexDelete].digeribility+'\n' ;
-				DigCount = DigCount + item[IndexDelete].digeribility -nFoodsEaten; 
+				log.value = log.value + "Digeribilita -" + item[IndexDelete].digeribility + "\n";
+				log.value = log.value + "DigCount -" + DigCount + "\n";
+				log.value = log.value + "nFoodsEaten -" + nFoodsEaten + "\n\n\n";
+				DigCount = parseInt(DigCount) + parseInt(item[IndexDelete].digeribility) - parseInt(nFoodsEaten); 
+				TimeToDig = DigCount;
+				TimeToDig = TimeToDig;
 				nFoodsEaten ++;
-				setTimeout(doPoop, DigCount*1000*3);
-			}
-			function doPoop(){
-				pet.toilet = 0 ;
-				log.value = log.value + ' ha fatto la cacca' ;
-			}
+				setTimeout(doPoop, TimeToDig*1000);	
 
- 
+				log.value = log.value + "Digeribilita -" + item[IndexDelete].digeribility + "\n";
+				log.value = log.value + "DigCount -" + DigCount + "\n";
+				log.value = log.value + "nFoodsEaten -" + nFoodsEaten + "\n";
+				log.value = log.value + "TimeToDig -" +  TimeToDig + "\n\n";
+			}
 		}
-////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 		if(pet.hungry >= 100) {
 			pet.hungry = 100;
 			log.value = log.value + pet.name + ": I'm FULL!\n";
 			message.innerHTML = "I'm full...!";
 			balloon[0].style.animation = 'appear 2s forwards';
 			setTimeout(function () {balloon[0].style.animation = 'disappear 2s forwards';}, 4000)
-			
+				
 			print();
 		}
+
 		checkHappiness = pet.happiness;
+
 		// Calcolo aggiuntivo al PESO e alla FELICITA'
 		pet.weight = parseInt(pet.weight) + parseInt(item[IndexDelete].plusWeight);
 		pet.happiness = parseInt(pet.happiness) + parseInt(item[IndexDelete].plusHappiness);
@@ -425,6 +431,7 @@ function feed() {
 		log.value = log.value + 'Feeded with ' + item[IndexDelete].name + '\n';
 		log.value = log.value + pet.name + ' Hungry increased to ' + pet.hungry + '\n';
 		log.value = log.value + pet.name + ' Weight increased to ' + pet.weight + '\n';
+
 		if(checkHappiness < pet.happiness)
 			log.value = log.value + pet.name + ' Happiness increased to ' + pet.happiness + '\n\n';
 		if(checkHappiness > pet.happiness)
@@ -433,13 +440,16 @@ function feed() {
 		if(item[IndexDelete].name == "fish" || item[IndexDelete].name == "sushi") {
 			growUp(20);
 			log.value = log.value + pet.name + " +20 GPoint\n"
-		} else if(item[IndexDelete].name == "bread" || item[IndexDelete].name == "fruits" || item[IndexDelete].name == "salad") {
+		} 
+		else if(item[IndexDelete].name == "bread" || item[IndexDelete].name == "fruits" || item[IndexDelete].name == "salad") {
 			growUp(5);
 			log.value = log.value + pet.name + " +5 GPoint\n"
-		} else if(item[IndexDelete].name == "chocolate" || item[IndexDelete].name == "chips" || item[IndexDelete].name == "spaghetti") {
+		} 
+		else if(item[IndexDelete].name == "chocolate" || item[IndexDelete].name == "chips" || item[IndexDelete].name == "spaghetti") {
 			growUp(10);
 			log.value = log.value + pet.name + " +10 GPoint\n"
-		} else {
+		} 
+		else {
 			growUp(15);
 			log.value = log.value + pet.name + " +15 GPoint\n"
 		}
@@ -450,6 +460,8 @@ function feed() {
 		item[IndexDelete].plusWeight = "";
 		item[IndexDelete].plusHappiness = "";
 		item[IndexDelete].price = "";
+		item[IndexDelete].digeribility = "";
+
 
 		// Eliminazione dell'oggetto parte grafica 
 		toFeed.style.backgroundImage = 'url(./css/image/plate.png)';
@@ -458,6 +470,8 @@ function feed() {
 		toFeed.style.animation = 'none';
 		pet.inventory = pet.inventory - 1;
 	}
+	
+
 	else if(pet.hungry >= 100) {
 		log.value = log.value + "I'm not hungry...\n"; 
 		message.innerHTML = "I'm not hungry...";
@@ -798,7 +812,6 @@ function Start() {
 
 	} else if (pet.hungry < 40) {log.value = log.value + "You can't train without eating.\n\n "; return false;}
 	  else if (pet.money < 100) {log.value = log.value + "You can't afford this training.\n\n "; return false;}
-
 }
 
 function RapidClick() {
@@ -876,8 +889,12 @@ function save() {
 	localStorage.setItem('timeClose', timeClose);
 	localStorage.setItem('delay', delay);
 
-	/*pet desease status variable*/
-	localStorage.setItem('desease', desease);
+	/*pet disease status variable*/
+	localStorage.setItem('disease', disease);
+	/*Wc needed variable*/
+	localStorage.setItem('DigCount', DigCount);
+	localStorage.setItem('nFoodsEaten', nFoodsEaten);
+	localStorage.setItem('TimeToDig', TimeToDig);
 
 	saveItem();	
 }
@@ -892,6 +909,7 @@ function saveItem() {
 		localStorage.setItem('itemPlusWeight'+i, item[i].plusWeight);
 		localStorage.setItem('itemPlusHappiness'+i, item[i].plusHappiness);
 		localStorage.setItem('itemPlusPrice'+i, item[i].itemPlusPrice);
+		localStorage.setItem('itemDigeribility'+i, item[i].digeribility);
 	}
 
 	for(i=0;i<10;i++) {
@@ -937,8 +955,14 @@ function load(){
 		timePassed();
 		
 
-		/*pet desease status variable*/
-		desease = parseInt(localStorage.getItem('desease'));
+		/*pet disease status variable*/
+		disease = parseInt(localStorage.getItem('disease'));
+
+		/*Wc needed variable*/
+		DigCount = parseInt(localStorage.getItem('DigCount'));
+		nFoodsEaten = parseInt(localStorage.getItem('nFoodsEaten'));
+		TimeToDig = parseInt(localStorage.getItem('TimeToDig'));
+
 		print();
 
 		document.getElementById('window').style.display = 'block';
@@ -964,7 +988,6 @@ function load(){
 	ScrollBottom();
 }
 
-
 function loadItem() {
 
 	pet.inventory = localStorage.getItem('inventory');
@@ -976,6 +999,9 @@ function loadItem() {
 		item[i].plusWeight = localStorage.getItem('itemPlusWeight'+i);
 		item[i].plusHappiness = localStorage.getItem('itemPlusHappiness'+i);
 		item[i].itemPlusPrice = localStorage.getItem('itemPlusPrice'+i);
+		item[i].digeribility = localStorage.getItem('itemDigeribility'+i);
+
+
 	}
 
 	for(i=0;i<10;i++) {
@@ -1037,7 +1063,7 @@ function decreaseStatInGame(){
 	weight = 0;
 	health = 0;
 
-	interval_0 = setInterval(controlDesease, 1000);
+	interval_0 = setInterval(controldisease, 1000);
 	interval_1 = setInterval(decreaseHungry, 1000*10*s);
 	interval_2 = setInterval(critState, 1000*60*s);
 	interval_3 = setInterval(mediumState, 1000*120*s);
@@ -1055,7 +1081,7 @@ function decreaseStatInGame(){
 
 
 
-	function controlDesease(){
+	function controldisease(){
 	if (disease == 0)
 		s = 45;
 	else { s = 60; }
@@ -1163,7 +1189,7 @@ function decreaseStatInGame(){
 /*GameLogic-function that decrease stat at the opening of the application based on the minutes passed by the closure*/
 function decreaseStatOutGame(){
 	s = 60;
-	if (desease == 0)
+	if (disease == 0)
 	s = 45;
 	happy = 0;
 	health = 0;
@@ -1272,13 +1298,13 @@ function checkDiseaseInGame(){
 	setTimeout(checkDisease, 1000);
 
 	function startCycle(){
-		if(pet.health< 10+Math.round(pet.strenght/5) )
+		if(pet.health< 10-Math.round(pet.strenght/5) )
 			interval_5 = setInterval(checkDisease, 1000*30*s);
 
-		if(pet.health >=10+Math.round(pet.strenght/5)  && pet.health<25+Math.round(pet.strenght/5) )
+		if(pet.health >=10-Math.round(pet.strenght/5)  && pet.health<25-Math.round(pet.strenght/5) )
 			interval_5 = setInterval(checkDisease, 1000*45*s);
 
-		if(pet.health >=25+Math.round(pet.strenght/5) && pet.health<50+Math.round(pet.strenght/5) )
+		if(pet.health >=25-Math.round(pet.strenght/5) && pet.health<50-Math.round(pet.strenght/5) )
 			interval_5 = setInterval(checkDisease, 1000*60*s);
 	}
 
@@ -1317,7 +1343,7 @@ function checkDiseaseOutGame(){
 
 			if (i%(45*s/60) == 0){
 
-				if(pet.health >=10+-Math.round(pet.strenght/5)  && pet.health<25-Math.round(pet.strenght/5) ){
+				if(pet.health >=10-Math.round(pet.strenght/5)  && pet.health<25-Math.round(pet.strenght/5) ){
 					disease = Math.floor( (Math.random()* (15+Math.round(pet.agility/5)) ) );
 				}
 			}
@@ -1390,6 +1416,44 @@ function heal(){
 	else if (pet.money < cost) { log.value = log.value + "You can't afford this heal.\n\n" ; }
 }
 
+function doPoop(){
+
+	pet.toilet = 0 ;
+	DigCount = 0 ;
+	nFoodsEaten = 0 ;
+	TimeToDig = 0 ;
+	log.value = log.value + ' ha fatto la cacca' ;
+}
+
+function doPoopOutGame(){
+	log.value = log.value + ' TimeToDig' + TimeToDig + '\n';
+	log.value = log.value + ' Delay' + delay + '\n' ;
+
+	if (TimeToDig > delay){
+		TimeToDig = TimeToDig - delay;
+		setTimeout(doPoop, TimeToDig);
+		log.value = log.value + ' TimeToDig new ' + TimeToDig + '\n' ;
+	}
+
+	else {
+
+		for (i=1; i<=delay/60; i++){
+
+			if (i%TimeToDig/60 == 0 && pet.toilet == 1 && TimeToDig !=0){
+
+				pet.toilet = 0 ;
+				DigCount = 0 ;
+				nFoodsEaten = 0 ;
+				TimeToDig = 0 ;
+				log.value = log.value + ' ha fatto la cacca' ;
+			}
+		}	
+	}		
+}
+
+function ClearWc(){
+	pet.toilet = 1 ;
+}
 
 function tutorial() {
 	$('#joyRideTipContent').joyride({
