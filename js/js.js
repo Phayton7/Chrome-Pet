@@ -135,7 +135,6 @@ function confirmName() {
 	{
 		alert('No name inserted');	
 	}
-
 }
 
 function LoadGame() {
@@ -332,7 +331,6 @@ function buy() {
 		log.value = log.value + 'Inventory Full! \n\n';
 
 	ScrollBottom();
-
 }
 
 /* Select the food (Graphic) */
@@ -692,26 +690,39 @@ function TimeCount() {
 					pet.weight = 0.1;
 					log.value = log.value + "Weight can't be decreased more...\n\n"
 				} else {log.value = log.value + "Weight decreased by " + c/2 + '\n'; }
-				if(c<10) {
+
+				if(c<9) {
 					growUp(15);
-					pet.agility = pet.agility + 2;
+					pet.agility = pet.agility + 3;
+					pet.strenght = pet.strenght + 3;
 					log.value = log.value + pet.name + " +15 GPoint\n"
+					log.value = log.value + "Perfect!!!\n";
+					log.value = log.value + "Agility  +3\n";
+					log.value = log.value + "Strenght +3\n";
+				}
+				if(c>=9 && c<11) {
+					growUp(10);
+					pet.agility = pet.agility + 2;
+					pet.strenght = pet.strenght + 2;
+					log.value = log.value + pet.name + " +10 GPoint\n"
+					log.value = log.value + "Well Done!\n";
+					log.value = log.value + "Strenght +2\n";
 					log.value = log.value + "Agility +2\n";
 				}
-				if(c>=10 && c<15) {
-					growUp(10);
+
+				if(c>=11 && c<13) {
+					growUp(5);
 					pet.agility++;
 					pet.strenght++;
-					log.value = log.value + pet.name + " +10 GPoint\n"
+					log.value = log.value + pet.name + " +5 GPoint\n"
+					log.value = log.value + "Good.\n";
 					log.value = log.value + "Strenght +1\n";
 					log.value = log.value + "Agility +1\n";
 				}
-				if(c>=15) {
-					growUp(5);
-					pet.strenght = pet.strenght + 2;
-					pet.grownPoint = pet.grownPoint + 5;
-					log.value = log.value + pet.name + " +5 GPoint\n"
-					log.value = log.value + "Strenght +2\n";
+				if(c>=13) {
+					growUp(1);		
+					log.value = log.value + pet.name + " +1 GPoint\n"
+					log.value = log.value + "You failed this training... try to do it faster!\n";
 				}
 			}
 		}
@@ -745,7 +756,7 @@ function Start() {
 		document.getElementById('gymButton').style.display = 'none';
 		document.getElementById('clickButton').style.display = 'block';
 
-		if (currentDay == 'Monday' || currentDay == 'Thursday')
+		if (currentDay == 'Tuesday' || currentDay == 'Thursday')
 			cost = cost/100*70;
 
 		pet.money = pet.money - cost;
@@ -796,7 +807,6 @@ function poop() {
 	setTimeout('poop()', 5000);
 }
 
-
 function clean() {
 	log = document.getElementById('log');
 
@@ -807,7 +817,6 @@ function clean() {
 		setTimeout(function() { document.getElementById('poop').style.display = 'none';}, 1000);
 	} else { log.value = log.value + 'Nothing to clean\n\n'}
 }
-
 
 //Save and Load
 function save() {
@@ -974,7 +983,6 @@ function timePassed(){
 	log.value = log.value + "h: " + h + " m: " + m +'\n';
 }
 
-
 /*Time-function that prints the minutes delay between open/closed time.*/
 function printTime(){
 	log = document.getElementById('log');
@@ -982,7 +990,6 @@ function printTime(){
 	log.value= log.value + 'Start Time : ' + timeStart + '\n\n'; 
 	log.value= log.value + 'Minutes after the application is closed : '+ Math.round(delay/60) + '\n\n'; 
 }
-
 
 /*GameLogic-function that decrease stat during the game*/
 function decreaseStatInGame(){	
@@ -1250,6 +1257,7 @@ function checkDiseaseInGame(){
 function checkDiseaseOutGame(){
 	s = 60;
 	log = document.getElementById('log');
+	
 
     for (i=1; i<delay/60; i++){
 
@@ -1257,7 +1265,7 @@ function checkDiseaseOutGame(){
 
 			if (i%(30*s/60) == 0){
 
-				if(pet.health< 10+Math.round(pet.strenght/5) ){
+				if(pet.health< 10-Math.round(pet.strenght/5) ){
 
 					disease = Math.floor( (Math.random()* (15+Math.round(pet.agility/5)) ) );
 				}	
@@ -1265,7 +1273,7 @@ function checkDiseaseOutGame(){
 
 			if (i%(45*s/60) == 0){
 
-				if(pet.health >=10+Math.round(pet.strenght/5)  && pet.health<25+Math.round(pet.strenght/5) ){
+				if(pet.health >=10+-Math.round(pet.strenght/5)  && pet.health<25-Math.round(pet.strenght/5) ){
 					disease = Math.floor( (Math.random()* (15+Math.round(pet.agility/5)) ) );
 				}
 			}
@@ -1273,7 +1281,7 @@ function checkDiseaseOutGame(){
 
 			if (i%(60*s/60) == 0){
 
-				if(pet.health >=25+Math.round(pet.strenght/5) && pet.health<50+Math.round(pet.strenght/5) ){
+				if(pet.health >=25-Math.round(pet.strenght/5) && pet.health<50-Math.round(pet.strenght/5) ){
 					disease = Math.floor( (Math.random()* (15+Math.round(pet.agility/5)) ) );
 				}
 			}
