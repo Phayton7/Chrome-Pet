@@ -340,6 +340,7 @@ function buy() {
 		log.value = log.value + 'Inventory Full! \n\n';
 
 	ScrollBottom();
+
 }
 
 /* Select the food (Graphic) */
@@ -729,41 +730,28 @@ function TimeCount() {
 				log.value = log.value + "Earn " + c*3 + "$!\n\n"
 				if(pet.weight<0) {
 					pet.weight = 0.1;
-					log.value = log.value + "Weight can't be decreased more...\n\n"
+					log.value = log.value + "Weight can't be decreased anymore...\n\n"
 				} else {log.value = log.value + "Weight decreased by " + c/2 + '\n'; }
-
-				if(c<9) {
+				if(c<10) {
 					growUp(15);
-					pet.agility = pet.agility + 3;
-					pet.strenght = pet.strenght + 3;
-					log.value = log.value + pet.name + " +15 GPoint\n"
-					log.value = log.value + "Perfect!!!\n";
-					log.value = log.value + "Agility  +3\n";
-					log.value = log.value + "Strenght +3\n";
-				}
-				if(c>=9 && c<11) {
-					growUp(10);
 					pet.agility = pet.agility + 2;
-					pet.strenght = pet.strenght + 2;
-					log.value = log.value + pet.name + " +10 GPoint\n"
-					log.value = log.value + "Well Done!\n";
-					log.value = log.value + "Strenght +2\n";
+					log.value = log.value + pet.name + " +15 GPoint\n"
 					log.value = log.value + "Agility +2\n";
 				}
-
-				if(c>=11 && c<13) {
-					growUp(5);
+				if(c>=10 && c<15) {
+					growUp(10);
 					pet.agility++;
 					pet.strenght++;
-					log.value = log.value + pet.name + " +5 GPoint\n"
-					log.value = log.value + "Good.\n";
+					log.value = log.value + pet.name + " +10 GPoint\n"
 					log.value = log.value + "Strenght +1\n";
 					log.value = log.value + "Agility +1\n";
 				}
-				if(c>=13) {
-					growUp(1);		
-					log.value = log.value + pet.name + " +1 GPoint\n"
-					log.value = log.value + "You failed this training... try to do it faster!\n";
+				if(c>=15) {
+					growUp(5);
+					pet.strenght = pet.strenght + 2;
+					pet.grownPoint = pet.grownPoint + 5;
+					log.value = log.value + pet.name + " +5 GPoint\n"
+					log.value = log.value + "Strenght +2\n";
 				}
 			}
 		}
