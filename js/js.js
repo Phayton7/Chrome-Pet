@@ -116,6 +116,7 @@ function confirmName() {
 
 	if(document.getElementById('inputName').value != "")
 	{
+		welcome("date");
 		document.getElementById('Logo').style.animation = 'bounceOut 1s forwards';
 		setTimeout(function (){
 			pet.name = document.getElementById('inputName').value;
@@ -129,7 +130,7 @@ function confirmName() {
 			document.getElementById('inputName').style.display = 'none';
 		}, 1000)
 		introduction();
-		welcome("date");
+		
 		print();
 		increaseMoneyInGame();
 		decreaseStatInGame(); 
@@ -848,10 +849,7 @@ function save() {
 
 	/*day-limits variables*/
 	localStorage.setItem('currentDay', currentDay);
-	localStorage.setItem('feedCounter', feedCounter);
-	localStorage.setItem('checkFeedToday', checkFeedToday);
-	localStorage.setItem('trainingCounter', trainingCounter);
-	localStorage.setItem('checkTrainingToday', checkTrainingToday);
+
 
 	timeClose = Date.now();
     /*day change check variables*/
@@ -885,7 +883,6 @@ function saveItem() {
 		slotToSave = document.getElementById('i'+i);
 		localStorage.setItem('slotName'+i, slotToSave.getAttribute('name'));
 		localStorage.setItem('slotValue'+i, slotToSave.getAttribute('value'));
-		alert('name:' + localStorage.getItem('slotName'+i) + '  value: ' + localStorage.getItem('slotValue'+i));
 	}
 }
 
@@ -910,10 +907,6 @@ function load(){
 
 		/*day-limits variables*/
 		currentDay = localStorage.getItem('currentDay');
-		feedCounter = localStorage.getItem('feedCounter');
-		checkFeedToday = localStorage.getItem('checkFeedToday');
-		trainingCounter = localStorage.getItem('trainingCounter');
-		checkTrainingToday = localStorage.getItem('checkTrainingToday');
 
 
 		/*day change check variables*/
