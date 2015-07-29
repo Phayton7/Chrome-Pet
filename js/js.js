@@ -41,7 +41,7 @@ var pet = ({
 	agility : 1,
 	weight : 5,
 	exp : 0,
-	money : 250,
+	money : 300,
 	happiness : 50,
 	inventory : 0,
 })
@@ -430,29 +430,25 @@ function feed() {
 
 		// Stampa tutto nel LOG
 		log.value = log.value + 'Feeded with ' + item[IndexDelete].name + '\n';
-		log.value = log.value + pet.name + ' Hungry increased to ' + pet.hungry + '\n';
-		log.value = log.value + pet.name + ' Weight increased to ' + pet.weight + '\n';
 
+		log.value = log.value + pet.name + ' Hungry -> ' + pet.hungry + '\n';
+		log.value = log.value + pet.name + ' Weight -> ' + pet.weight + '\n';
 		if(checkHappiness < pet.happiness)
-			log.value = log.value + pet.name + ' Happiness increased to ' + pet.happiness + '\n\n';
+			log.value = log.value + pet.name + ' Happiness +' + pet.happiness + '\n\n';
 		if(checkHappiness > pet.happiness)
-			log.value = log.value + pet.name + ' Happiness decreased to ' + pet.happiness + '\n\n';
+			log.value = log.value + pet.name + ' Happiness -' + pet.happiness + '\n\n';
 
 		if(item[IndexDelete].name == "fish" || item[IndexDelete].name == "sushi") {
-			growUp(20);
-			log.value = log.value + pet.name + " +20 GPoint\n"
-		} 
-		else if(item[IndexDelete].name == "bread" || item[IndexDelete].name == "fruits" || item[IndexDelete].name == "salad") {
+			log.value = log.value + pet.name + " +20 GPoint\n\n"
+		} else if(item[IndexDelete].name == "bread" || item[IndexDelete].name == "fruits" || item[IndexDelete].name == "salad") {
 			growUp(5);
-			log.value = log.value + pet.name + " +5 GPoint\n"
-		} 
-		else if(item[IndexDelete].name == "chocolate" || item[IndexDelete].name == "chips" || item[IndexDelete].name == "spaghetti") {
+			log.value = log.value + pet.name + " +5 GPoint\n\n"
+		} else if(item[IndexDelete].name == "chocolate" || item[IndexDelete].name == "chips" || item[IndexDelete].name == "spaghetti") {
 			growUp(10);
-			log.value = log.value + pet.name + " +10 GPoint\n"
-		} 
-		else {
+			log.value = log.value + pet.name + " +10 GPoint\n\n"
+		} else {
 			growUp(15);
-			log.value = log.value + pet.name + " +15 GPoint\n"
+			log.value = log.value + pet.name + " +15 GPoint\n\n"
 		}
 
 		// Eliminazione dell'oggetto dall'array parte logica //
@@ -669,7 +665,7 @@ function growUp(howMuch) {
 
 function evolutionControl() {
 
-    if(pet.grownPoint >= 500 && pet.std == 1) {
+    if(pet.grownPoint >= 52 && pet.std == 1) {
 
         pet.std = 2;
         petAge = document.getElementById('pet');
@@ -819,21 +815,6 @@ function RapidClick() {
 	}
 }
 
-// Poop 
-function poop() {
-
-	log = document.getElementById('log');
-
-	var n = Math.floor((Math.random() * 100) + 0);
-	if(n%2 == 0) {
-		pet.toilet = 1;
-		document.getElementById('poop').style.display = 'block';
-		document.getElementById('poop').style.animation = 'bounceIn 0.5s forwards';
-		log.value = log.value + pet.name + ' did the poop\n\n';
-	}
-
-	setTimeout('poop()', 5000);
-}
 
 function clean() {
 	log = document.getElementById('log');

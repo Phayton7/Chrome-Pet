@@ -306,6 +306,7 @@ body
 	position: absolute;
 	top: 520px;
 	left: 20px;
+	border-radius: 32px;
 	width: 64px;
 	height: 64px;
 	background-image: url('button/Shop.png');
@@ -317,6 +318,7 @@ body
 :hover#buttonShop{
 	opacity: 1.0;
 	animation: pulse 0.5s ease infinite;
+	box-shadow: 0px 0px 10px 2px rgba(255,102,0,1);
 }
 
 
@@ -324,6 +326,7 @@ body
 	position: absolute;
 	top: 520px;
 	left: 90px;
+	border-radius: 32px;
 	width: 64px;
 	height: 64px;
 	background-image: url('button/Feed.png');
@@ -335,12 +338,14 @@ body
 :hover#buttonFeed{
 	opacity: 1.0;
 	animation: pulse 0.5s ease infinite;
+	box-shadow: 0px 0px 10px 2px rgba(255,102,0,1);
 }
 
 #buttonHeal{
 	position: absolute;
 	top: 520px;
 	left: 160px;
+	border-radius: 32px;
 	width: 64px;
 	height: 64px;
 	background-image: url('button/Heal.png');
@@ -352,12 +357,14 @@ body
 :hover#buttonHeal{
 	opacity: 1.0;
 	animation: pulse 0.5s ease infinite;
+	box-shadow: 0px 0px 10px 2px rgba(255,102,0,1);
 }
 
 #buttonGym{
 	position: absolute;
 	top: 520px;
 	left: 230px;
+	border-radius: 32px;
 	width: 64px;
 	height: 64px;
 	background-image: url('button/GYM.png');
@@ -369,12 +376,14 @@ body
 :hover#buttonGym{
 	opacity: 1.0;
 	animation: pulse 0.5s ease infinite;
+	box-shadow: 0px 0px 10px 2px rgba(255,102,0,1);
 }
 
 #buttonWC{
 	position: absolute;
 	top: 520px;
 	left: 300px;
+	border-radius: 32px;
 	width: 64px;
 	height: 64px;
 	background-image: url('button/WC.png');
@@ -386,6 +395,7 @@ body
 :hover#buttonWC{
 	opacity: 1.0;
 	animation: pulse 0.5s ease infinite;
+	box-shadow: 0px 0px 10px 2px rgba(255,102,0,1);
 }
 
 
