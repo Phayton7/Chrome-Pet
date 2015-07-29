@@ -1,4 +1,4 @@
-
+/*Arrays for shop and inventory */
 var shop = new Array();
 var item = new Array();
 
@@ -6,15 +6,18 @@ var item = new Array();
 var score = 0;
 var start = 0;
 var sec=0;
-var t;
 var nClick = 100;
 var nTraining=0;
 var myVar;
 
+/*variable that contain the current day*/
 var currentDay;
+
+/*Variables for the Pet's needs.*/
 var DigCount = 0;
 var nFoodsEaten = 0 ;
 var TimeToDig = 0 ;
+var TimeToDigDecreased = 0;
 
 /* Variables for the time when the application is close.*/
 var timeStart; 
@@ -23,14 +26,24 @@ var delay;
 
 /* Variables for a possible Pet's disease. */
 var disease = 1;  
+
+/* Variables used to set the intervall for many function. */
+var interval_0;
 var interval_1;
 var interval_2;
 var interval_3;
 var interval_4;
+var interval_5;
+var interval_6;
+var interval_7;
+var interval_8;
 
+/*Variables use for the buy-function*/
+var select = "";
+var select2 = "";
 
+/*Pet Class*/
 var pet = ({
-
 	name : '',
 	std : 1,
 	grownPoint: 0,
@@ -69,6 +82,7 @@ shop[7] = new food("sushi",      "21", "6",  "-9", "90",  "3");
 shop[8] = new food("chicken",    "26", "23", "5",  "125", "4");
 shop[9] = new food("hamburger",  "30", "28", "12", "135", "5");
 
+/* Array inventory */
 item[0] = new food("", "", "", "", "", "");
 item[1] = new food("", "", "", "", "", "");
 item[2] = new food("", "", "", "", "", "");
@@ -80,13 +94,9 @@ item[7] = new food("", "", "", "", "", "");
 item[8] = new food("", "", "", "", "", "");
 item[9] = new food("", "", "", "", "", "");
 
-var select = "";
-var select2 = "";
-
+/*Grafic-function for Start Botton in the log screen*/
 function NewGame() {
-
-	
-    
+  
 	document.getElementById('buttonStart').style.animation = 'bounceOut 0.5s forwards';
 	document.getElementById('buttonLoad').style.animation = 'bounceOut 0.5s forwards';
 
@@ -100,6 +110,7 @@ function NewGame() {
 	}, 1000)
 } 
 
+/*Grafic-function for Back Botton in the log screen*/
 function back() {
 
 	document.getElementById('buttonConfirm').style.animation = 'bounceOut 0.5s forwards';
@@ -112,11 +123,11 @@ function back() {
 	}, 1000)
 }
 
+/*Grafic/loading-function that actually start the game*/
 function confirmName() {
 
 	if(document.getElementById('inputName').value != "")
 	{
-		welcome("date");
 		document.getElementById('Logo').style.animation = 'bounceOut 1s forwards';
 		setTimeout(function (){
 			pet.name = document.getElementById('inputName').value;
@@ -129,8 +140,9 @@ function confirmName() {
 			document.getElementById('buttonConfirm').style.display = 'none';
 			document.getElementById('inputName').style.display = 'none';
 		}, 1000)
-		introduction();
 		
+		introduction();
+		welcome("date");
 		print();
 		increaseMoneyInGame();
 		decreaseStatInGame(); 
@@ -138,16 +150,13 @@ function confirmName() {
 		document.getElementById('log').value = document.getElementById('log').value + 'WELCOME!\n\n'
 		setTimeout(function (){ tutorial(); }, 4500);
 	}
-	else
-	{
-		alert('No name inserted');	
-	}
+	else{ alert('No name inserted'); }
 }
 
+/*Load-function that load all the variables, attribute, and object saved in the localstorage*/
 function LoadGame() {
 
-	if(localStorage.getItem('name') != "") {
-
+	if(localStorage.getItem('name') != ""){
 		welcome("date");
 		load();
 		print();
@@ -157,24 +166,24 @@ function LoadGame() {
 		checkDiseaseOutGame();
 		increaseMoneyInGame();
 		increaseMoneyOutGame();
+		DecreaseTimeToDig();
 		doPoopOutGame();
 		evolutionControl();
-
-	} else { alert("There's no save data"); }
+	} 
+	else { alert("There's no save data");}
 }
 
+/*Grafic/logic-function for the date and for saving all the data before the window is closed. */
 function welcome(data) {
-
     window.onload = date_time('date');
-    window.onbeforeunload = function(event)
-    {
+    window.onbeforeunload = function(event){
     	save();
         return 'This game have an Autosave function! Close the Game ?'
     };
 }
 
+/*Grafic-function for some animation at the start of the game*/
 function introduction() {
-
     canvas = document.getElementById('canvas');
     canvas.style.display = 'block';
     canvas.style.animation = 'darker 2s forwards';
@@ -182,29 +191,23 @@ function introduction() {
     setTimeout(function () {canvas.style.display = 'none';}, 5000);
 }
 
-function TimeStamp() {
-
-	var TimeStamp = Math.floor(Date.now() / 1000);
-	TimeStamp = TimeStamp / 60;
-	TimeStamp = TimeStamp / 60;
-	return TimeStamp;
-}
-
-/* That function print the stats of the pet getting by id*/
+/*Grafic-function that print in different color some pet state*/
 function print() {
 
-	
 	if(pet.health < 50) {
 		document.getElementById('health').style.color = '#FF4136'
-	}else { document.getElementById('health').style.color = '#39CCCC';}
+	}
+	else { document.getElementById('health').style.color = '#39CCCC';}
 
 	if(pet.hungry < 40) {
 		document.getElementById('hungry').style.color = '#FF4136';
-	}else { document.getElementById('hungry').style.color = '#39CCCC';}
+	}
+	else { document.getElementById('hungry').style.color = '#39CCCC';}
 
 	if(pet.happiness < 40) {
 		document.getElementById('happiness').style.color = '#FF4136';
-	}else { document.getElementById('happiness').style.color = '#39CCCC';}
+	}else 
+	{ document.getElementById('happiness').style.color = '#39CCCC';}
 
 	document.getElementById('name').innerHTML = 'Name: ' + pet.name + '\n\n';
 	document.getElementById('grownPoint').innerHTML = 'GPoint: ' + pet.grownPoint + '\n\n';
@@ -219,16 +222,15 @@ function print() {
 	setTimeout('print()', 1000);
 }
 
-/* Function that select the object (Graphic) */
+/*Grafic-function that select the object*/
 function selectBuy(foodToBuy) {
-
 	selectToBuy = document.getElementById(foodToBuy);
 	selectToBuy.style.opacity = 1;
 	selectToBuy.style.animation = "pulse 0.5s ease infinite";
 	select = selectToBuy.getAttribute('name');
 	log = document.getElementById('log');
 
-	for(index2L=0;index2L<10;index2L++) {
+	for(index2L=0;index2L<10;index2L++){
 
 		if(shop[index2L].name == select)
 		{
@@ -238,14 +240,12 @@ function selectBuy(foodToBuy) {
 			log.value = log.value + 'Happiness: ' + shop[index2L].plusHappiness +'\n';
 			log.value = log.value + 'Price: ' + shop[index2L].price +'\n';
 			log.value = log.value + 'Digeribility: ' + shop[index2L].digeribility +'\n\n';
-
 		}
 	}
 	for(i=0;i<10;i++) {
 
 		Deselect = document.getElementById(shop[i].name);
-		if(Deselect.getAttribute('value') != selectToBuy.getAttribute('value')) {
-
+		if(Deselect.getAttribute('value') != selectToBuy.getAttribute('value')){
 			Deselect.style.opacity = 0.4;
 			Deselect.style.animation = 'none';
 		}
@@ -253,9 +253,8 @@ function selectBuy(foodToBuy) {
 	ScrollBottom();
 }
 
-/* Function buy after selectBuy (Logic) */
+/*Logic-function to buy a food after its selection*/
 function buy() {
-
 	log = document.getElementById('log');
 	foodToBuy = document.getElementById(select);
 	style = foodToBuy.currentStyle || window.getComputedStyle(foodToBuy, false);
@@ -263,31 +262,25 @@ function buy() {
 	emptySlotG = "";
 	emptySlotL = "";
 
-
 	// Search object to insert //
-	
 	IndexFood = -1;
+	for(index2L=0;index2L<10 && IndexFood == -1;index2L++){
 
-	for(index2L=0;index2L<10 && IndexFood == -1;index2L++) {
-
-		if(shop[index2L].name == select)
-		{
+		if(shop[index2L].name == select){
 			IndexFood = index2L;
 		}
 	}
 
-	if(pet.inventory<10 && pet.money >= shop[IndexFood].price) {
+	if(pet.inventory<10 && pet.money >= shop[IndexFood].price){
 
 		// Searching for the empty slot in the array  //
-		
-		if(pet.inventory == 0) {
+		if(pet.inventory == 0){
 			emptySlotL=0;
-		} else {
+		} 
+		else {
+			for(indexL=0;indexL<10 && emptySlotL=="";indexL++){
 
-			for(indexL=0;indexL<10 && emptySlotL=="";indexL++) {
-
-				if(item[indexL].name == "") {
-
+				if(item[indexL].name == ""){
 					emptySlotL=indexL;
 				}
 			}
@@ -295,11 +288,10 @@ function buy() {
 
 		// Searching for the empty slot (Graphic) //
 		for(indexG=0;indexG<10 && emptySlotG=="";indexG++) {
-
 			indexG2 = 'i'+indexG;
 			slotInventory = document.getElementById(indexG2);
-			if(slotInventory.getAttribute('name')=='plate') {
 
+			if(slotInventory.getAttribute('name')=='plate'){
 				emptySlotG = indexG2;
 			}
 		}
@@ -319,46 +311,41 @@ function buy() {
 		item[emptySlotL].digeribility = shop[IndexFood].digeribility;
 
 		if (currentDay == 'Wednesday' || currentDay == 'Saturday')	
-			shop[IndexFood].price = Math.round(shop[IndexFood].price/100*70);
-
-		pet.money = pet.money - shop[IndexFood].price;
+			pet.money = pet.money - Math.round(shop[IndexFood].price/100*70);
+		else{pet.money = pet.money - shop[IndexFood].price; }
 
 		name = item[emptySlotL].name;
 
 		// Print the event in the Log //
 		log.value = log.value + 'You bought ' + shop[IndexFood].name + ' added in your inventory.\n';
-		log.value = log.value + 'Money spent: ' + shop[IndexFood].price + '$, money left: ' + pet.money + '$\n\n';
+		if (currentDay == 'Wednesday' || currentDay == 'Saturday')
+			log.value = log.value + 'Money spent: ' + shop[IndexFood].price/100*70 + '$, money left: ' + pet.money + '$\n\n';
+		else{ log.value = log.value + 'Money spent: ' + Math.round(shop[IndexFood].price/100*70) + '$, money left: ' + pet.money + '$\n\n'; }
 		
-
 		pet.inventory++;
-
 	} 
 
 	if(pet.money < shop[IndexFood].price)
 		log.value = log.value + 'No money left! \n\n';
-
 	if(pet.inventory==10) 
 		log.value = log.value + 'Inventory Full! \n\n';
 
 	ScrollBottom();
-
 }
 
 /* Select the food (Graphic) */
 function selectFeed(foodToFeed) {
 
 	selectToFeed = document.getElementById(foodToFeed);
-	if(selectToFeed.getAttribute('value') != -1) {
 
+	if(selectToFeed.getAttribute('value') != -1){
 		selectToFeed.style.animation = "pulse 0.5s ease infinite";
 		select2 = selectToFeed.getAttribute('id');
 	
-		for(i=0;i<10;i++) {
-
+		for(i=0;i<10;i++){
 			Deselect = document.getElementById('i'+i);
 
 			if(Deselect.getAttribute('id') != selectToFeed.getAttribute('id')) {
-
 				Deselect.style.animation = 'none';
 				name1 = Deselect.getAttribute('id');
 				name2 = selectToFeed.getAttribute('id');
@@ -369,34 +356,40 @@ function selectFeed(foodToFeed) {
 
 /* Feed function that incrase the stats of the pet and more... */
 function feed() {
-
 	message = document.getElementById('message');
 	balloon = document.getElementsByClassName('speech-bubble');
-
 	print();
-	if(pet.hungry < 100 && select2 != "") {
 
+	if(pet.hungry < 100 && select2 != ""){
 		log = document.getElementById('log');
 		toFeed = document.getElementById(select2);
 		IndexDelete = toFeed.getAttribute('value');
 	
-
 		// Calcolo aggiutivo della FAME
 		pet.hungry = parseInt(pet.hungry) + parseInt(item[IndexDelete].lessHungry);
 		checkWc();
 
 		function checkWc(){ 
-
 			if (pet.toilet == 1){
 				log.value = log.value + "Digeribilita -" + item[IndexDelete].digeribility + "\n";
 				log.value = log.value + "DigCount -" + DigCount + "\n";
 				log.value = log.value + "nFoodsEaten -" + nFoodsEaten + "\n\n\n";
-				DigCount = parseInt(DigCount) + parseInt(item[IndexDelete].digeribility) - parseInt(nFoodsEaten); 
-				TimeToDig = DigCount;
-				TimeToDig = TimeToDig;
-				nFoodsEaten ++;
-				setTimeout(doPoop, TimeToDig*1000);	
 
+				DigCount = parseInt(DigCount) + parseInt(item[IndexDelete].digeribility) - parseInt(nFoodsEaten); 
+				TimeToDig = DigCount*60*30;
+				TimeToDigDecreased = TimeToDig;
+				nFoodsEaten ++;
+
+				setTimeout(doPoop, TimeToDig*1000);	
+				interval_8= setInterval(DecreaseTimeToDig, 1000);
+
+				function DecreaseTimeToDig(){
+					TimeToDigDecreased --;
+
+					if (TimeToDigDecreased == 0)
+						clearInterval(interval_8);
+				}
+				
 				log.value = log.value + "Digeribilita -" + item[IndexDelete].digeribility + "\n";
 				log.value = log.value + "DigCount -" + DigCount + "\n";
 				log.value = log.value + "nFoodsEaten -" + nFoodsEaten + "\n";
@@ -404,14 +397,12 @@ function feed() {
 			}
 		}
 
-
-		if(pet.hungry >= 100) {
+		if(pet.hungry >= 100){
 			pet.hungry = 100;
 			log.value = log.value + pet.name + ": I'm FULL!\n";
 			message.innerHTML = "I'm full...!";
 			balloon[0].style.animation = 'appear 2s forwards';
 			setTimeout(function () {balloon[0].style.animation = 'disappear 2s forwards';}, 4000)
-				
 			print();
 		}
 
@@ -421,7 +412,7 @@ function feed() {
 		pet.weight = parseInt(pet.weight) + parseInt(item[IndexDelete].plusWeight);
 		pet.happiness = parseInt(pet.happiness) + parseInt(item[IndexDelete].plusHappiness);
 
-		if(pet.happiness >= 100) {
+		if(pet.happiness >= 100){
 			pet.happiness = 100;
 			log.value = log.value + pet.name + " is HAPPY!\n";
 			message.innerHTML = "Thank you!";
@@ -431,7 +422,6 @@ function feed() {
 
 		// Stampa tutto nel LOG
 		log.value = log.value + 'Feeded with ' + item[IndexDelete].name + '\n';
-
 		log.value = log.value + pet.name + ' Hungry -> ' + pet.hungry + '\n';
 		log.value = log.value + pet.name + ' Weight -> ' + pet.weight + '\n';
 		if(checkHappiness < pet.happiness)
@@ -439,15 +429,18 @@ function feed() {
 		if(checkHappiness > pet.happiness)
 			log.value = log.value + pet.name + ' Happiness -' + pet.happiness + '\n\n';
 
-		if(item[IndexDelete].name == "fish" || item[IndexDelete].name == "sushi") {
+		if(item[IndexDelete].name == "fish" || item[IndexDelete].name == "sushi"){
 			log.value = log.value + pet.name + " +20 GPoint\n\n"
-		} else if(item[IndexDelete].name == "bread" || item[IndexDelete].name == "fruits" || item[IndexDelete].name == "salad") {
+		} 
+		else if(item[IndexDelete].name == "bread" || item[IndexDelete].name == "fruits" || item[IndexDelete].name == "salad"){
 			growUp(5);
 			log.value = log.value + pet.name + " +5 GPoint\n\n"
-		} else if(item[IndexDelete].name == "chocolate" || item[IndexDelete].name == "chips" || item[IndexDelete].name == "spaghetti") {
+		} 
+		else if(item[IndexDelete].name == "chocolate" || item[IndexDelete].name == "chips" || item[IndexDelete].name == "spaghetti"){
 			growUp(10);
 			log.value = log.value + pet.name + " +10 GPoint\n\n"
-		} else {
+		} 
+		else{
 			growUp(15);
 			log.value = log.value + pet.name + " +15 GPoint\n\n"
 		}
@@ -460,7 +453,6 @@ function feed() {
 		item[IndexDelete].price = "";
 		item[IndexDelete].digeribility = "";
 
-
 		// Eliminazione dell'oggetto parte grafica 
 		toFeed.style.backgroundImage = 'url(./css/image/plate.png)';
 		toFeed.setAttribute('name', 'plate');
@@ -469,8 +461,7 @@ function feed() {
 		pet.inventory = pet.inventory - 1;
 	}
 	
-
-	else if(pet.hungry >= 100) {
+	else if(pet.hungry >= 100){
 		log.value = log.value + "I'm not hungry...\n"; 
 		message.innerHTML = "I'm not hungry...";
 		balloon[0].style.animation = 'appear 2s forwards';
@@ -483,8 +474,8 @@ function feed() {
 	print();
 }
 
+/*Grafic-function to scroll the log at the last value.*/
 function ScrollBottom() {
-
 	log = document.getElementById('log');
    	log.scrollTop = log.scrollHeight;
 }
@@ -492,76 +483,74 @@ function ScrollBottom() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/* Hide and show function */
+/*Grafic-function that hide and show window*/
 function HideShow(quale) {  
-    if(document.getElementById(quale).style.display == 'block') {
+    if(document.getElementById(quale).style.display == 'block'){
         document.getElementById(quale).style.animation = 'bounceOut 0.5s forwards'
         setTimeout(function(){ document.getElementById(quale).style.display = 'none'; }, 600)
     }
-    else
-    {
+    else{
        document.getElementById(quale).style.display = 'block';
        document.getElementById(quale).style.animation = 'bounceIn 0.5s forwards';
     }
 }
 
-/* Data&Time generator function */
+/*Logic-function that generate the date and the time*/
 function date_time(id) {
-        date = new Date;
-        year = date.getFullYear();
-        month = date.getMonth();
-        months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-        d = date.getDate();
-        day = date.getDay();
-        days = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
-        h = date.getHours();
-        if(h<10)
-        {
-                h = "0"+h;
-        }
-        m = date.getMinutes();
-        if(m<10)
-        {
-                m = "0"+m;
-        }
-        s = date.getSeconds();
-        if(s<10)
-        {
-                s = "0"+s;
-        }
-        result = ''+days[day]+' '+months[month]+' '+d+' - '+h+':'+m;
-        currentDay = days[day];
+    date = new Date;
+    year = date.getFullYear();
+    month = date.getMonth();
+    months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+    d = date.getDate();
+    day = date.getDay();
+    days = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+    h = date.getHours();
 
-        checkTime(h);
-        document.getElementById(id).innerHTML = result;
+    if(h<10){
+    	h = "0"+h;
+    }
+    m = date.getMinutes();
 
-        setTimeout(function() { growUp(1); }, 60000);
-        print();
+    if(m<10){
+    	m = "0"+m;
+    }
+    s = date.getSeconds();
 
-        setTimeout('date_time("'+id+'");', 20000);
+    if(s<10){
+    	s = "0"+s;
+    }
+
+    result = ''+days[day]+' '+months[month]+' '+d+' - '+h+':'+m;
+    currentDay = days[day];
+    checkTime(h);
+    document.getElementById(id).innerHTML = result;
+    setTimeout(function() { growUp(1); }, 60000);
+    print();
+    setTimeout('date_time("'+id+'");', 20000);
 }
 
+/*Grafic-function that print the date*/
 function printDate() {
-	    date = new Date;
-        year = date.getFullYear();
-        month = date.getMonth();
-        months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-        d = date.getDate();
-        day = date.getDay();
-        days = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
-        toString = days[day] + ' ' + months[month] + ' ' + d;
+	date = new Date;
+    year = date.getFullYear();
+    month = date.getMonth();
+    months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+    d = date.getDate();
+    day = date.getDay();
+    days = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+    toString = days[day] + ' ' + months[month] + ' ' + d;
 
-        log = document.getElementById('log');
-        log.value = log.value + '//////////////////';
-        log.value = log.value + '<' + toString + '>\n' + 'Welcome Back!\n'
+    log = document.getElementById('log');
+    log.value = log.value + '//////////////////';
+    log.value = log.value + '<' + toString + '>\n' + 'Welcome Back!\n'
 
-        if (day == 2 || day == 5)
-        	 log.value = log.value + "Today the Gym grant you a 30% discount! \n\n";
-        if (day == 3 || day == 6)
-        	 log.value = log.value + "Today the Food Shop grant you a 30% discount! \n\n";
+    if (day == 2 || day == 5)
+    	log.value = log.value + "Today the Gym grant you a 30% discount! \n\n";
+    if (day == 3 || day == 6)
+    	log.value = log.value + "Today the Food Shop grant you a 30% discount! \n\n";
 }
 
-/* Time checker for background change */
+/*Grafic-function that change the background depending on time*/
 function checkTime(hour) {
 
     gameWindow = document.getElementById('window');
@@ -647,30 +636,27 @@ function checkTime(hour) {
     }
 }
 
+/*Grafic-function that set the window focus on click*/
 function setFocus(id1,id2) {
-
     div1 = document.getElementById(id1);
     div2 = document.getElementById(id2);
-
     div1.style.zIndex = 2;
     div2.style.zIndex = 1;
 } 
 
-
+/*Logic-function that increased the GP*/
 function growUp(howMuch) {
-
     pet.grownPoint = pet.grownPoint + howMuch;
     evolutionControl();
     print();
 }
-
+/*Grafic-function that change */
 function evolutionControl() {
-
-    if(pet.grownPoint >= 52 && pet.std == 1) {
-
+    if(pet.grownPoint >= 500 && pet.std == 1) {
         pet.std = 2;
         petAge = document.getElementById('pet');
         petAge.style.animation = 'flash 1s forwards';
+
         setTimeout(function() {
             petAge.style.backgroundImage = "url(./css/pet/petGrown.png)";
             petAge.style.animation = 'playEvo 1s steps(2) infinite';
@@ -678,10 +664,9 @@ function evolutionControl() {
             petAge.style.width = '132px';
             petAge.style.height = '124px';
         }, 800);
-        print();
+      	print();
     }
 }
-
 
 /* Both draggable function */
 $(function () {
@@ -689,25 +674,18 @@ $(function () {
                                handle: "#drag1"
                 });
 });
-
 $(function () {
         $("#Inventory").draggable({
                                handle: "#drag2"
                 });
 });
-
 $(function () {
         $("#Gym").draggable({
                                handle: "#drag3"
                 });
 });
 
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/*Gym-function that start a counter until the training is finished.*/
-
+/*Logic-function for the Gym that start a counter until the training is finished.*/
 function TimeCount() {
 
 		log = document.getElementById('log');
@@ -727,50 +705,60 @@ function TimeCount() {
 				log.value = log.value + "Earn " + c*3 + "$!\n\n"
 				if(pet.weight<0) {
 					pet.weight = 0.1;
-					log.value = log.value + "Weight can't be decreased anymore...\n\n"
+					log.value = log.value + "Weight can't be decreased more...\n\n"
 				} else {log.value = log.value + "Weight decreased by " + c/2 + '\n'; }
-				if(c<10) {
+
+				if(c<9) {
 					growUp(15);
-					pet.agility = pet.agility + 2;
+					pet.agility = pet.agility + 3;
+					pet.strenght = pet.strenght + 3;
 					log.value = log.value + pet.name + " +15 GPoint\n"
+					log.value = log.value + "Perfect!!!\n";
+					log.value = log.value + "Agility  +3\n";
+					log.value = log.value + "Strenght +3\n";
+				}
+				if(c>=9 && c<11) {
+					growUp(10);
+					pet.agility = pet.agility + 2;
+					pet.strenght = pet.strenght + 2;
+					log.value = log.value + pet.name + " +10 GPoint\n"
+					log.value = log.value + "Well Done!\n";
+					log.value = log.value + "Strenght +2\n";
 					log.value = log.value + "Agility +2\n";
 				}
-				if(c>=10 && c<15) {
-					growUp(10);
+
+				if(c>=11 && c<13) {
+					growUp(5);
 					pet.agility++;
 					pet.strenght++;
-					log.value = log.value + pet.name + " +10 GPoint\n"
+					log.value = log.value + pet.name + " +5 GPoint\n"
+					log.value = log.value + "Good.\n";
 					log.value = log.value + "Strenght +1\n";
 					log.value = log.value + "Agility +1\n";
 				}
-				if(c>=15) {
-					growUp(5);
-					pet.strenght = pet.strenght + 2;
-					pet.grownPoint = pet.grownPoint + 5;
-					log.value = log.value + pet.name + " +5 GPoint\n"
-					log.value = log.value + "Strenght +2\n";
+				if(c>=13) {
+					growUp(1);		
+					log.value = log.value + pet.name + " +1 GPoint\n"
+					log.value = log.value + "You failed this training... try to do it faster!\n";
 				}
 			}
 		}
 		ScrollBottom();
 		print();
 }
-
+/*Logic-function that reset the Gym value*/
 function reset() {
-
 	start = 0;
 	c=0;
 	score=0;
-
 	document.getElementById('time').innerHTML = 'Second: ' + c;
 	document.getElementById('score').innerHTML = 'Score: -';
 	document.getElementById('gymButton').style.display = 'block';
 	document.getElementById('clickButton').style.display = 'none';
 }
 
-
+/*Logic-function that start on click the timer for the Gym*/
 function Start() {
-
 	start = 0;
 	c=0;
 	score=0;
@@ -783,40 +771,32 @@ function Start() {
 		document.getElementById('clickButton').style.display = 'block';
 
 		if (currentDay == 'Tuesday' || currentDay == 'Thursday')
-			cost = cost/100*70;
-
-		pet.money = pet.money - cost;
+			pet.money = pet.money - cost/100*70;
+		else {pet.money = pet.money - cost; }
 		pet.hungry = pet.hungry - 10;
 
-
 		log.value = log.value + 'Hungry -10\n';
-		log.value = log.value + 'Money -' + cost + '\n\n'
-
-		print()
+		log.value = log.value + 'Money -' + cost + '\n\n';
+		print();
 		start = 1;
-
-	} else if (pet.hungry < 40) {log.value = log.value + "You can't train without eating.\n\n "; return false;}
-	  else if (pet.money < 100) {log.value = log.value + "You can't afford this training.\n\n "; return false;}
+	} 
+	else if (pet.hungry < 40) {log.value = log.value + "You can't train without eating.\n\n "; return false;}
+	else if (pet.money < 100) {log.value = log.value + "You can't afford this training.\n\n "; return false;}
 }
-
+/*Logic-function that increased the counter of clicks*/
 function RapidClick() {
-
-	if(score > nClick-1) {
+	if(score > nClick-1){
 		score = nClick-1;
-
 	}
-
 	if(start == 0)
 		start = 1;
-
-	if(start == 1)
-	{
+	if(start == 1){
 		score++;
 		document.getElementById('score').innerHTML = 'Score: ' + score;
 	}
 }
 
-
+/*Leva sta funzione dopo aver inserito la parte grafica*/
 function clean() {
 	log = document.getElementById('log');
 
@@ -828,11 +808,8 @@ function clean() {
 	} else { log.value = log.value + 'Nothing to clean\n\n'}
 }
 
-//Save and Load
+/*Save all the data in localstorage*/
 function save() {
-
-	var timeStamp = Math.floor(Date.now() / 1000);
-
 	localStorage.setItem('name', pet.name);
 	localStorage.setItem('GPoint', pet.grownPoint);
 	localStorage.setItem('health', pet.health);
@@ -850,7 +827,6 @@ function save() {
 	/*day-limits variables*/
 	localStorage.setItem('currentDay', currentDay);
 
-
 	timeClose = Date.now();
     /*day change check variables*/
 	localStorage.setItem('timeClose', timeClose);
@@ -862,15 +838,15 @@ function save() {
 	localStorage.setItem('DigCount', DigCount);
 	localStorage.setItem('nFoodsEaten', nFoodsEaten);
 	localStorage.setItem('TimeToDig', TimeToDig);
+	localStorage.setItem('TimeToDigDecreased', TimeToDigDecreased);
+
 
 	saveItem();	
 }
 
+/*Save all the inventory object in localstorage*/
 function saveItem() {
-
-
-	for(i=0;i<10;i++) {
-
+	for(i=0;i<10;i++){
 		localStorage.setItem('itemName'+i, item[i].name);
 		localStorage.setItem('itemLessHungry'+i, item[i].lessHungry);
 		localStorage.setItem('itemPlusWeight'+i, item[i].plusWeight);
@@ -879,18 +855,18 @@ function saveItem() {
 		localStorage.setItem('itemDigeribility'+i, item[i].digeribility);
 	}
 
-	for(i=0;i<10;i++) {
+	for(i=0;i<10;i++){
 		slotToSave = document.getElementById('i'+i);
 		localStorage.setItem('slotName'+i, slotToSave.getAttribute('name'));
 		localStorage.setItem('slotValue'+i, slotToSave.getAttribute('value'));
+		alert('name:' + localStorage.getItem('slotName'+i) + '  value: ' + localStorage.getItem('slotValue'+i));
 	}
 }
 
+/*Load all the data in localstorage*/
 function load(){
-
 	pet.name = localStorage.getItem('name');
-	if (pet.name != "undefined" || pet.name != "null" ) {
-
+	if (pet.name != "undefined" || pet.name != "null" ){
 		log = document.getElementById('log');
 		pet.grownPoint = parseInt(localStorage.getItem('GPoint'));
 		pet.health = parseInt(localStorage.getItem('health'));
@@ -908,7 +884,6 @@ function load(){
 		/*day-limits variables*/
 		currentDay = localStorage.getItem('currentDay');
 
-
 		/*day change check variables*/
 		timeStart = parseInt(Date.now());
 		timeClose = parseInt(localStorage.getItem('timeClose'));
@@ -916,7 +891,6 @@ function load(){
 		delay = parseInt(delay/1000);
 		timePassed();
 		
-
 		/*pet disease status variable*/
 		disease = parseInt(localStorage.getItem('disease'));
 
@@ -924,7 +898,7 @@ function load(){
 		DigCount = parseInt(localStorage.getItem('DigCount'));
 		nFoodsEaten = parseInt(localStorage.getItem('nFoodsEaten'));
 		TimeToDig = parseInt(localStorage.getItem('TimeToDig'));
-
+	 	TimeToDigDecreased = parseInt(localStorage.getItem('TimeToDigDecreased'));
 		print();
 
 		document.getElementById('window').style.display = 'block';
@@ -950,6 +924,7 @@ function load(){
 	ScrollBottom();
 }
 
+/*Load all the inventory object in localstorage*/
 function loadItem() {
 
 	pet.inventory = localStorage.getItem('inventory');
@@ -976,23 +951,13 @@ function loadItem() {
 	}
 }
 
-function DeleteSaveData() {
-
-	localStorage.clear();
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////
-
-
+/*Logic-function that get the minutes delay between open/closed time.*/
 function timePassed(){
-
 	log = document.getElementById('log');
 	s = (timeStart - timeClose)/1000;
 	m = parseInt(s/60);
 	h = parseInt(m/60);
 	m = parseInt(m%60);
-
 	log.value = log.value + "\nTime passed since last Play:\n";
 	log.value = log.value + "h: " + h + " m: " + m +'\n';
 }
@@ -1004,8 +969,7 @@ function printTime(){
 	log.value= log.value + 'Start Time : ' + timeStart + '\n\n'; 
 	log.value= log.value + 'Minutes after the application is closed : '+ Math.round(delay/60) + '\n\n'; 
 }
-
-
+/*Logic-function that prevents that the stat decrese under the 0.*/
 function checkState() {
 	if(pet.hungry<0)
 		pet.hungry = 0;
@@ -1017,7 +981,7 @@ function checkState() {
 		pet.happiness = 0;
 }
 
-/*GameLogic-function that decrease stat during the game*/
+/*Logic-function that decrease stat during the game*/
 function decreaseStatInGame(){	
 	s=60;
 	hungry = 0;
@@ -1026,29 +990,36 @@ function decreaseStatInGame(){
 	health = 0;
 
 	interval_0 = setInterval(controldisease, 1000);
-	interval_1 = setInterval(decreaseHungry, 1000*10*s);
-	interval_2 = setInterval(critState, 1000*60*s);
-	interval_3 = setInterval(mediumState, 1000*120*s);
-	interval_4 = setInterval(modarateState, 1000*240*s);
+	interval_1 = setInterval(controlPoop, 1000*60*60);
+	interval_2 = setInterval(decreaseHungry, 1000*10*s);
+	interval_3 = setInterval(critState, 1000*60*s);
+	interval_4 = setInterval(mediumState, 1000*120*s);
+	interval_5 = setInterval(modarateState, 1000*240*s);
 
 	function notification(){
-
 		log = document.getElementById('log');
-
 		log.value = log.value + "Hungry -" + hungry + "\n";
 		log.value = log.value + "Happiness -" + happy + "\n";
 		log.value = log.value + "Health -" + health + "\n";
 		log.value = log.value + "Weight -" +  weight + "\n\n";
 	}
 
-
-
-	function controldisease(){
-	if (disease == 0)
-		s = 45;
-	else { s = 60; }
+	function controlPoop(){
+		if (pet.toilet == 0){
+			pet.health -- ;
+			health++;
+			checkState();
+			print();
+			notification();
+			ScrollBottom();
+		}
 	}
 
+	function controldisease(){
+		if (disease == 0)
+			s = 45;
+		else { s = 60; }
+	}
 
 	function decreaseHungry(){
 		pet.hungry -- ;
@@ -1059,15 +1030,14 @@ function decreaseStatInGame(){
 		ScrollBottom();
 	}
 
-
 	function critState(){
 		if (pet.weight> 100){
-				pet.hungry--;
-				pet.happiness --;
-				pet.health -- ;
-				hungry++;
-				happy++;
-				health++;
+			pet.hungry--;
+			pet.happiness --;
+			pet.health -- ;
+			hungry++;
+			happy++;
+			health++;
 		}
 
 		if (pet.hungry< 10){
@@ -1090,7 +1060,6 @@ function decreaseStatInGame(){
 	}	
 
 	function mediumState(){	
-
 		if (pet.weight>=75 && pet.weight<100){
 			pet.hungry--;
 			pet.happiness --;
@@ -1141,14 +1110,14 @@ function decreaseStatInGame(){
 			pet.health ++ ;
 			health--;
 		}
-		notification();
-		ScrollBottom();
-		checkState();
-		print();
+	notification();
+	ScrollBottom();
+	checkState();
+	print();
 	}
 }
 
-/*GameLogic-function that decrease stat at the opening of the application based on the minutes passed by the closure*/
+/*Logic-function that decrease stat at the opening of the application based on the minutes passed by the closure*/
 function decreaseStatOutGame(){
 	s = 60;
 	if (disease == 0)
@@ -1157,10 +1126,17 @@ function decreaseStatOutGame(){
 	health = 0;
 	hungry = 0;
 
-
 	log = document.getElementById('log');
 
 	for (i=1; i<=delay/60; i++){
+
+		if (i%(60*60/60) == 0){
+
+			if(pet.toilet== 0 ){
+				pet.health--;
+				this.health++;
+			}		 
+		}
 
 		if (i%(10*s/60) == 0){
 			pet.hungry -- ;	
@@ -1168,7 +1144,6 @@ function decreaseStatOutGame(){
 		}
 
 		if (i%(60*s/60) == 0){
-
 
 			if (pet.weight> 100){
 				pet.hungry--;
@@ -1190,7 +1165,6 @@ function decreaseStatOutGame(){
 				pet.health -- ;
 				this.health++;
 			}
-
 		}
 
 
@@ -1216,7 +1190,6 @@ function decreaseStatOutGame(){
 				pet.health -- ;
 				this.health++;
 			}
-
 		}
 
 
@@ -1241,7 +1214,6 @@ function decreaseStatOutGame(){
 				pet.health ++ ;
 				this.health--;
 			}
-
 		}
 		checkState();	
 		print();
@@ -1253,7 +1225,7 @@ function decreaseStatOutGame(){
 	ScrollBottom();
 }
 
-/*GameLogic-function that check if the pet get sick in game.*/
+/*Logic-function that check if the pet get sick in game*/
 function checkDiseaseInGame(){
 	s = 60;
 	setTimeout(startCycle, 1000);
@@ -1261,58 +1233,46 @@ function checkDiseaseInGame(){
 
 	function startCycle(){
 		if(pet.health< 10-Math.round(pet.strenght/5) )
-			interval_5 = setInterval(checkDisease, 1000*30*s);
-
+			interval_6 = setInterval(checkDisease, 1000*30*s);
 		if(pet.health >=10-Math.round(pet.strenght/5)  && pet.health<25-Math.round(pet.strenght/5) )
-			interval_5 = setInterval(checkDisease, 1000*45*s);
-
+			interval_6 = setInterval(checkDisease, 1000*45*s);
 		if(pet.health >=25-Math.round(pet.strenght/5) && pet.health<50-Math.round(pet.strenght/5) )
-			interval_5 = setInterval(checkDisease, 1000*60*s);
+			interval_6 = setInterval(checkDisease, 1000*60*s);
 	}
 
 	function checkDisease(){
-		disease = Math.floor( (Math.random()* (15+Math.round(pet.agility/5)) ) );
-
 		if(disease == 0){
-			clearInterval(interval_4);	
+			clearInterval(interval_6);	
 			message = document.getElementById('message');
 			balloon = document.getElementsByClassName('speech-bubble');
-
 			message.innerHTML = "I don't feel good...";
 			balloon[0].style.animation = 'appear 2s forwards';
-		} else if(disease == 1){ setTimeout(function () {balloon[0].style.animation = 'disappear 2s forwards';}, 4000);};
-
+		} 
+		else if(disease != 0){ setTimeout(function () {balloon[0].style.animation = 'disappear 2s forwards';}, 4000);};
 	}
 }
 
-/*GameLogic-function that check if the pet get sick out game.*/
+/*Logic-function that check if the pet get sick out game*/
 function checkDiseaseOutGame(){
 	s = 60;
 	log = document.getElementById('log');
 	
-
     for (i=1; i<delay/60; i++){
-
     	if (disease != 0){
 
 			if (i%(30*s/60) == 0){
-
 				if(pet.health< 10-Math.round(pet.strenght/5) ){
-
 					disease = Math.floor( (Math.random()* (15+Math.round(pet.agility/5)) ) );
 				}	
 			}
 
 			if (i%(45*s/60) == 0){
-
 				if(pet.health >=10-Math.round(pet.strenght/5)  && pet.health<25-Math.round(pet.strenght/5) ){
 					disease = Math.floor( (Math.random()* (15+Math.round(pet.agility/5)) ) );
 				}
 			}
 
-
 			if (i%(60*s/60) == 0){
-
 				if(pet.health >=25-Math.round(pet.strenght/5) && pet.health<50-Math.round(pet.strenght/5) ){
 					disease = Math.floor( (Math.random()* (15+Math.round(pet.agility/5)) ) );
 				}
@@ -1324,35 +1284,29 @@ function checkDiseaseOutGame(){
 	balloon = document.getElementsByClassName('speech-bubble');
 
 	if (disease == 0) {
-
 		log.value = log.value + 'Oh no! Pet get sick.\n\n' ;
-		
-
 		message.innerHTML = "I don't feel good...";
-		balloon[0].style.animation = 'appear 2s forwards';
-		
-	} else { setTimeout(function () {balloon[0].style.animation = 'disappear 2s forwards';}, 4000); }
+		balloon[0].style.animation = 'appear 2s forwards';	
+	} 
+	else { setTimeout(function () {balloon[0].style.animation = 'disappear 2s forwards';}, 4000); }
 }
 
-/*GameLogic-function that check if the pet get sick in game.*/
+/*Logic-function that check if the pet get sick in game*/
 function increaseMoneyInGame(){
 	s = 60;
-	interval_6 = setInterval(increaseMoney, 1000*3*s);
-
+	interval_7 = setInterval(increaseMoney, 1000*3*s);
 	function increaseMoney(){
 		pet.money++;
 	}	
 }
 
-/*GameLogic-function that check if the pet get sick in game.*/
+/*Logic-function that check if the pet get sick in game*/
 function increaseMoneyOutGame(){
 	s = 60;
 	money = 0;
 	log = document.getElementById('log');
-
 	for (i=1; i<=delay/60; i++){
-
-		if (i%(3*s/60) == 0) {
+		if (i%(3*s/60) == 0){
 			pet.money ++ ;	
 			money++;	
 		}
@@ -1360,15 +1314,15 @@ function increaseMoneyOutGame(){
 	log.value = log.value + 'Money +' + money + '\n\n';
 }
 
-/*GameLogic-function that heal the pet when it get sick.*/
+/*Logic-function that heal the pet when it get sick*/
 function heal(){
 	point = pet.health;
 	cost = 250+50-point;
 	if (disease == 0 && pet.money >= cost){
 		disease = 1;
 
-	
-		pet.health = 50;
+		if (pet.health < 50)
+			pet.health = 50;
 		pet.money = pet.money - cost;
 		log.value = log.value + 'Pet is healed.\nYou payed ' + cost + '$. \n\n';
 		checkDiseaseInGame();
@@ -1378,31 +1332,31 @@ function heal(){
 	else if (pet.money < cost) { log.value = log.value + "You can't afford this heal.\n\n" ; }
 }
 
+/*Logic-function that show if the pet did the poop*/
 function doPoop(){
-
+	log.value = log.value + pet.name + ' did the poop!';
+	log.value = log.value + pet.name + ' weight decreased from' + pet.weight + 'to' + pet.weight- (nFoodsEaten*2);
+	pet.weight = pet.weight - nFoodsEaten*2;
 	pet.toilet = 0 ;
 	DigCount = 0 ;
 	nFoodsEaten = 0 ;
 	TimeToDig = 0 ;
-	log.value = log.value + ' ha fatto la cacca' ;
-}
+} 
 
+/*Logic-function that show if the pet did the poop out of game*/
 function doPoopOutGame(){
 	log.value = log.value + ' TimeToDig' + TimeToDig + '\n';
 	log.value = log.value + ' Delay' + delay + '\n' ;
-
+	TimeToDig = TimeToDigDecreased;
+	log.value = log.value + ' TimeToDig new ' + TimeToDig + '\n' ;
 	if (TimeToDig > delay){
 		TimeToDig = TimeToDig - delay;
-		setTimeout(doPoop, TimeToDig);
+		setTimeout(doPoop, TimeToDig*1000);
 		log.value = log.value + ' TimeToDig new ' + TimeToDig + '\n' ;
 	}
-
 	else {
-
 		for (i=1; i<=delay/60; i++){
-
 			if (i%TimeToDig/60 == 0 && pet.toilet == 1 && TimeToDig !=0){
-
 				pet.toilet = 0 ;
 				DigCount = 0 ;
 				nFoodsEaten = 0 ;
@@ -1413,10 +1367,16 @@ function doPoopOutGame(){
 	}		
 }
 
+/*Logic-function use to clean the pet*/
 function ClearWc(){
-	pet.toilet = 1 ;
+	if (pet.toilet == 0){
+		pet.toilet = 1 ;
+		log.value = log.value + "You've cleaned" + pet.name;
+	}
+	else {log.value = log.value + pet.name +"is already cleaned";}
 }
 
+/*Grafic-function that show the tutorial*/
 function tutorial() {
 	$('#joyRideTipContent').joyride({
 		  autoStart : true,
@@ -1430,4 +1390,16 @@ function tutorial() {
 	});
 }
 
+/*Logic Function use to know when the pet have to do the poop*/
+function DecreaseTimeToDig(){
 
+	if(TimeToDig > 0)
+		interval_8= setInterval(DecreaseTTD, 1000);
+	
+	function DecreaseTTD(){
+		TimeToDigDecreased --;
+		if (TimeToDigDecreased == 0)
+		clearInterval(interval_8);
+	}
+}
+		
