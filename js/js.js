@@ -1335,8 +1335,11 @@ function heal(){
 /*Logic-function that show if the pet did the poop*/
 function doPoop(){
 	log.value = log.value + pet.name + ' did the poop!';
-	log.value = log.value + pet.name + ' weight decreased from' + pet.weight + 'to' + pet.weight- (nFoodsEaten*2);
+	log.value = log.value + pet.name + ' weight decreased from' + pet.weight + 'to' + pet.weight- (nFoodsEaten*2) + '\n';
 	pet.weight = pet.weight - nFoodsEaten*2;
+	poop = document.getElementById('poop');
+	poop.style.display = 'block';
+	poop.style.animation = 'appear 2s forwards';
 	pet.toilet = 0 ;
 	DigCount = 0 ;
 	nFoodsEaten = 0 ;
@@ -1345,14 +1348,11 @@ function doPoop(){
 
 /*Logic-function that show if the pet did the poop out of game*/
 function doPoopOutGame(){
-	log.value = log.value + ' TimeToDig' + TimeToDig + '\n';
-	log.value = log.value + ' Delay' + delay + '\n' ;
+
 	TimeToDig = TimeToDigDecreased;
-	log.value = log.value + ' TimeToDig new ' + TimeToDig + '\n' ;
 	if (TimeToDig > delay){
 		TimeToDig = TimeToDig - delay;
 		setTimeout(doPoop, TimeToDig*1000);
-		log.value = log.value + ' TimeToDig new ' + TimeToDig + '\n' ;
 	}
 	else {
 		for (i=1; i<=delay/60; i++){
@@ -1361,7 +1361,9 @@ function doPoopOutGame(){
 				DigCount = 0 ;
 				nFoodsEaten = 0 ;
 				TimeToDig = 0 ;
-				log.value = log.value + ' ha fatto la cacca' ;
+				poop = document.getElementById('poop');
+				poop.style.display = 'block';
+				poop.style.animation = 'appear 2s forwards';
 			}
 		}	
 	}		
@@ -1371,9 +1373,12 @@ function doPoopOutGame(){
 function ClearWc(){
 	if (pet.toilet == 0){
 		pet.toilet = 1 ;
-		log.value = log.value + "You've cleaned" + pet.name;
+		log.value = log.value + "You've cleaned" + pet.name;ù
+		poop = document.getElementById('poop');
+		poop.style.animation = 'disappear 2s forwards';
+		setTimeout(function() { poop.style.display = 'none'; }, 1000);
 	}
-	else {log.value = log.value + pet.name +"is already cleaned";}
+	else {log.value = log.value + pet.name +" is already cleaned\n";}
 }
 
 /*Grafic-function that show the tutorial*/
